@@ -1,0 +1,1 @@
+# django-cqrs-demo
