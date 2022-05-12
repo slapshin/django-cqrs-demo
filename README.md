@@ -1,1 +1,1 @@
-# Django CQRS Dmo
+# Django CQRS Demo
