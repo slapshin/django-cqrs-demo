@@ -5,7 +5,10 @@ from pydantic import BaseModel
 from apps.blogs.models import Post
 from apps.blogs.models.enums import PostStatus
 from apps.core.logic import commands
-from apps.core.logic.errors import AccessDeniedApplicationError, ObjectNotFoundError
+from apps.core.logic.errors import (
+    AccessDeniedApplicationError,
+    ObjectNotFoundError,
+)
 from apps.users.models import User
 
 
@@ -15,7 +18,7 @@ class Command(BaseModel, commands.ICommand):
     user_id: int | None
     post_id: int
     title: str
-    content: str
+    content: str  # noqa: WPS110
     status: PostStatus
 
 

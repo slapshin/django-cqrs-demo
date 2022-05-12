@@ -10,7 +10,7 @@ from apps.core.logic.errors import AccessDeniedApplicationError
 
 @dataclass(frozen=True)
 class Query(queries.IQuery):
-    """Post list."""
+    """Post retrieve query."""
 
     post_id: int
     user_id: int | None = None
@@ -32,6 +32,16 @@ class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
         if query.only_owner and not query.user_id:
             raise AccessDeniedApplicationError()
 
+        posts = self._build_posts_query(query)
+        post = posts.filter(id=query.post_id).first()
+
+        self._check_if_post_allowed(query, post)
+
+        return QueryResult(
+            instance=post,
+        )
+
+    def _build_posts_query(self, query: Query) -> models.QuerySet:
         posts = Post.objects.all()
         if query.user_id:
             posts = posts.filter(
@@ -39,15 +49,18 @@ class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
                 | models.Q(
                     status=PostStatus.DRAFT,
                     author_id=query.user_id,
-                )
+                ),
             )
         else:
             posts = posts.filter(models.Q(status=PostStatus.PUBLISHED))
 
-        post = posts.filter(id=query.post_id).first()
-        if post and query.only_owner and post.author_id != query.user_id:
-            raise AccessDeniedApplicationError()
+        return posts
 
-        return QueryResult(
-            instance=post,
+    def _check_if_post_allowed(self, query: Query, post: Post | None):
+        is_allowed = (
+            not post
+            or not query.only_owner
+            or (post.author_id == query.user_id)
         )
+        if not is_allowed:
+            raise AccessDeniedApplicationError()

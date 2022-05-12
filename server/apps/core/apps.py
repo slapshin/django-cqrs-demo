@@ -12,7 +12,7 @@ class AppConfig(BaseAppConfig):
     verbose_name = _("VN__CORE")
 
     def ready(self):
-        """Trigger on app ready."""
+        """App ready callback."""
         super().ready()
 
         self._setup_dependency_injection()

@@ -7,6 +7,7 @@ from apps.core.logic import commands
 
 class Command(BaseModel, commands.ICommand):
     """Logout command."""
+
     user_id: int
 
 
@@ -19,4 +20,5 @@ class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
     """Logout user."""
 
     def execute(self, command: Command) -> CommandResult:
+        """Main logic here."""
         return CommandResult()

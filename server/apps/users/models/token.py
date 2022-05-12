@@ -7,8 +7,8 @@ from rest_framework.authtoken.models import Token as BaseToken
 class Token(BaseToken):
     """User model."""
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
-
     class Meta:
         verbose_name = _("VN__TOKEN")
         verbose_name_plural = _("VN__TOKENS")
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)

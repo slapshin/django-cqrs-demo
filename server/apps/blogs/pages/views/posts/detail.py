@@ -6,10 +6,13 @@ from apps.core.pages.base_retrieve_query import BaseRetrieveQueryView
 
 
 class View(BaseRetrieveQueryView):
-    query = posts.retrieve.Query
-    template_name = 'posts/detail.html'
+    """Post detail view."""
 
-    def get_query(self, request: HttpRequest) -> queries.IQuery:
+    query = posts.retrieve.Query
+    template_name = "posts/detail.html"
+
+    def create_query(self, request: HttpRequest) -> queries.IQuery:
+        """Create query to execute."""
         return self.query(
             user_id=request.user.id if request.user.is_authenticated else None,
             post_id=self.kwargs["id"],

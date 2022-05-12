@@ -8,7 +8,10 @@ class UserManager(BaseUserManager):
     """Users manager."""
 
     def create_user(
-            self, login: str, password: Optional[str] = None, **kwargs,
+        self,
+        login: str,
+        password: Optional[str] = None,
+        **kwargs,
     ):
         """Create user."""
         if not login:

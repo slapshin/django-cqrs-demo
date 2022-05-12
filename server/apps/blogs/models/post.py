@@ -8,13 +8,18 @@ from apps.blogs.models.enums import PostStatus
 class Post(models.Model):
     """Post model."""
 
+    class Meta:
+        verbose_name = _("VN__POST")
+        verbose_name_plural = _("VN__POSTS")
+        unique_together = ("author", "title")
+
     title = models.CharField(
         max_length=255,  # noqa:  WPS432
         verbose_name=_("VN__TITLE"),
         help_text=_("HT__TITLE"),
     )
 
-    content = models.TextField(
+    content = models.TextField(  # noqa: WPS110
         verbose_name=_("VN__CONTENT"),
         help_text=_("HT__CONTENT"),
     )
@@ -44,11 +49,6 @@ class Post(models.Model):
         verbose_name=_("VN__AUTHOR"),
         help_text=_("HT__AUTHOR"),
     )
-
-    class Meta:
-        verbose_name = _("VN__POST")
-        verbose_name_plural = _("VN__POSTS")
-        unique_together = ("author", "title")
 
     def __str__(self):
         """Text representation."""

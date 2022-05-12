@@ -22,7 +22,8 @@ def _debug_task(self):
 @app.on_after_finalize.connect
 def setup_periodic_tasks(sender, **kwargs):
     """Add periodic tasks."""
-
     sender.add_periodic_task(
-        60 * 60, _debug_task.s(), name="debug task",
+        60 * 60,
+        _debug_task.s(),
+        name="debug task",
     )

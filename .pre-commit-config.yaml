@@ -1,0 +1,25 @@
+fail_fast: true
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        language: system
+        entry: poetry run black --check
+        exclude: .*\/migrations
+        types: [ python ]
+      - id: flake8
+        name: flake8
+        language: system
+        entry: poetry run flake8
+        types: [ python ]
+      - id: polint
+        name: polint
+        language: system
+        entry: poetry run polint -i location,unsorted,untranslated locale
+        pass_filenames: false
+      - id: dennis
+        name: dennis
+        language: system
+        entry: poetry run dennis-cmd lint --errorsonly locale
+        pass_filenames: false

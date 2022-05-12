@@ -22,25 +22,29 @@ class _Form(forms.Form):
 
 
 class View(BaseCommandView):
+    """Login view."""
+
     command = login.Command
     template_name = "users/login.html"
     form = _Form
 
-    def get_command(
-            self,
-            request: HttpRequest,
-            form: _Form,
+    def create_command(
+        self,
+        request: HttpRequest,
+        form: _Form,
     ) -> commands.ICommand:
+        """Create command to execute."""
         return self.command(
             username=form.data["username"],
             password=form.data["password"],
         )
 
     def handle_command_success(
-            self,
-            request: HttpRequest,
-            form: _Form,
-            command_result: login.CommandResult,
+        self,
+        request: HttpRequest,
+        form: _Form,
+        command_result: login.CommandResult,
     ) -> HttpResponse:
+        """Handle success command execution."""
         auth.login(request, command_result.user)
         return redirect("blogs:home")

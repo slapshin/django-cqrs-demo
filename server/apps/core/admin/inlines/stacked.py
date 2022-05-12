@@ -1,7 +1,6 @@
 from django.contrib import admin
 
 
-
 class BaseStackedInline(admin.StackedInline):
     """Base stacked inline."""
 

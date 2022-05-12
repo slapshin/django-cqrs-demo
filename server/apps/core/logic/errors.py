@@ -9,9 +9,9 @@ class BaseApplicationError(BaseError, metaclass=abc.ABCMeta):
     """Base exception for application errors."""
 
     def __init__(
-            self,
-            code: str | None = None,
-            message: str | None = None,
+        self,
+        code: str | None = None,
+        message: str | None = None,
     ):
         """Initizaling."""
         if code:

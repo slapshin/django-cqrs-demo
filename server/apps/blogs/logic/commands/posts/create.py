@@ -14,7 +14,7 @@ class Command(BaseModel, commands.ICommand):
 
     user_id: int | None
     title: str
-    content: str
+    content: str  # noqa: WPS110
     status: PostStatus
 
 

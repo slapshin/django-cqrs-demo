@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-10 16:32+0300\n"
+"POT-Creation-Date: 2022-05-12 17:33+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,18 @@ msgstr ""
 
 msgid "VN__BLOGS"
 msgstr "Blogs"
+
+msgid "Draft"
+msgstr "Draft"
+
+msgid "Published"
+msgstr "Published"
+
+msgid "VN__POST"
+msgstr "Post"
+
+msgid "VN__POSTS"
+msgstr "Posts"
 
 msgid "VN__TITLE"
 msgstr "Title"
@@ -45,32 +57,35 @@ msgstr "Updated at"
 msgid "HT__UPDATED_AT"
 msgstr " "
 
+msgid "VN__STATUS"
+msgstr "Status"
+
+msgid "HT__STATUS"
+msgstr " "
+
 msgid "VN__AUTHOR"
 msgstr "Author"
 
 msgid "HT__AUTHOR"
 msgstr " "
 
-msgid "VN__POST"
-msgstr "Post"
-
-msgid "VN__POSTS"
-msgstr "Posts"
-
 msgid "VN__CORE"
 msgstr "Core"
 
 msgid "MSG__INVALID_INPUT"
-msgstr ""
+msgstr "Invalid input"
 
 msgid "MSG__OPERATION_NOT_PERMITTED"
-msgstr ""
+msgstr "Operation not permitted"
 
 msgid "MSG__NOT_FOUND_ERROR"
-msgstr ""
+msgstr "Object not found"
 
 msgid "VN__USERS"
 msgstr "User"
+
+msgid "MSG__USER_ALREADY_EXISTS"
+msgstr "User already exists"
 
 msgid "VN__USER_MUST_HAVE_A_LOGIN"
 msgstr "User must have a login"
@@ -81,17 +96,8 @@ msgstr "Token"
 msgid "VN__TOKENS"
 msgstr "Tokens"
 
-msgid "VN__LOGIN"
-msgstr "Login"
-
-msgid "HT__LOGIN"
-msgstr "Login"
-
-msgid "VN__NAME"
-msgstr "Name"
-
-msgid "HT__NAME"
-msgstr "Name"
+msgid "VN__USER"
+msgstr "User"
 
 msgid "VN__EMAIL"
 msgstr "Email"
@@ -111,8 +117,8 @@ msgstr "Is active"
 msgid "HT__IS_ACTIVE"
 msgstr "Is active"
 
-msgid "VN__USER"
-msgstr "User"
+msgid "Password"
+msgstr "Password"
 
 msgid "MSG_UNABLE_TO_LOGIN_WITH_PROVIDED_CREDENTIALS"
 msgstr "Unable to login with provded credentials."
@@ -122,6 +128,3 @@ msgstr "Please, include login and password."
 
 msgid "MESSAGE__ENGLISH"
 msgstr "English"
-
-msgid "VN__ADMIN_DASHBOARD"
-msgstr "Admin dashboard"

@@ -8,5 +8,7 @@ def execute_query(query: IQuery):
     query_bus = injector.get(IQueryBus)
     return query_bus.dispatch(query)
 
+
 def register_queries(handlers: list[QueryInfo]):
+    """Register queries handlers at injector."""
     injector.get(IQueryBus).register_many(handlers)

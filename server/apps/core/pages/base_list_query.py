@@ -16,6 +16,7 @@ class BaseListQueryView(BaseQueryView):
     """Base list query view."""
 
     def get_context_data(self, **kwargs):
+        """Provides context data."""
         query_result = self.execute_query(self.request)
         context = super().get_context_data(**kwargs)
 

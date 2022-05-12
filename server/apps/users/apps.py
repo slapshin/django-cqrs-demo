@@ -11,6 +11,7 @@ class AppConfig(BaseAppConfig):
     verbose_name = _("VN__USERS")
 
     def ready(self):
+        """App ready callback."""
         from apps.users.logic.commands.main import COMMANDS  # noqa: WPS433
 
         super().ready()

@@ -15,15 +15,18 @@ class _Form(forms.ModelForm):
 
 
 class View(BaseCommandView):
+    """Post create view."""
+
     command = posts.create.Command
     template_name = "posts/create.html"
     form = _Form
 
-    def get_command(
-            self,
-            request: HttpRequest,
-            form: _Form,
+    def create_command(
+        self,
+        request: HttpRequest,
+        form: _Form,
     ) -> commands.ICommand:
+        """Create command to execute."""
         return self.command(
             user_id=request.user.id if request.user.is_authenticated else None,
             title=form.data["title"],
@@ -32,9 +35,10 @@ class View(BaseCommandView):
         )
 
     def handle_command_success(
-            self,
-            request: HttpRequest,
-            form: _Form,
-            command_result: posts.create.CommandResult,
+        self,
+        request: HttpRequest,
+        form: _Form,
+        command_result: posts.create.CommandResult,
     ) -> HttpResponse:
+        """Handle success command execution."""
         return redirect("blogs:post_detail", command_result.instance.id)

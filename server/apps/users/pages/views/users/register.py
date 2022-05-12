@@ -1,4 +1,4 @@
-from django.contrib import messages, auth
+from django.contrib import auth, messages
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
@@ -16,15 +16,18 @@ class _Form(UserCreationForm):
 
 
 class View(BaseCommandView):
+    """Register view."""
+
     command = register.Command
     template_name = "users/register.html"
     form = _Form
 
-    def get_command(
+    def create_command(
         self,
         request: HttpRequest,
         form: _Form,
     ) -> commands.ICommand:
+        """Create command to execute."""
         return self.command(
             email=form.data["email"],
             password1=form.data["password1"],
@@ -37,6 +40,7 @@ class View(BaseCommandView):
         form: _Form,
         command_result: register.CommandResult,
     ) -> HttpResponse:
+        """Handle success command execution."""
         messages.success(request, "Registration successful.")
         auth.login(request, command_result.user)
         return redirect("blogs:home")

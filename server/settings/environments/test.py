@@ -1,4 +1,4 @@
-SECRET_KEY = "test.key"
+SECRET_KEY = "test"  # noqa: S105
 
 DATABASES = {
     "default": {

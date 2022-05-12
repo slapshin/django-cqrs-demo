@@ -19,7 +19,8 @@ def user(db, django_user_model, django_username_field):
         )
     except django_user_model.DoesNotExist:
         return django_user_model.objects.create_user(
-            DEFAULT_USERNAME, DEFAULT_USER_PASSWORD,
+            DEFAULT_USERNAME,
+            DEFAULT_USER_PASSWORD,
         )
 
 
@@ -33,15 +34,16 @@ def superuser(db, django_user_model, django_username_field):
     username_field = django_username_field
 
     try:
-        user = django_user_model.objects.get(
+        new_user = django_user_model.objects.get(
             **{username_field: DEFAULT_USERNAME},
         )
     except django_user_model.DoesNotExist:
         return django_user_model.objects.create_superuser(
-            DEFAULT_USERNAME, DEFAULT_USER_PASSWORD,
+            DEFAULT_USERNAME,
+            DEFAULT_USER_PASSWORD,
         )
 
-    user.is_superuser = True
-    user.is_staff = True
-    user.save()
-    return user
+    new_user.is_superuser = True
+    new_user.is_staff = True
+    new_user.save()
+    return new_user

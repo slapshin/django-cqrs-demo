@@ -7,12 +7,13 @@ from apps.core.admin.base import BaseModelAdmin
 @admin.register(Post)
 class PostAdmin(BaseModelAdmin):
     """Post admin."""
+
     list_display = (
         "title",
         "author",
         "status",
     )
-    list_filter = ("author", "status")
+    list_filter = ("status",)
     autocomplete_fields = ("author",)
     fields = (
         "author",

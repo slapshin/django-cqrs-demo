@@ -28,13 +28,15 @@ class Command(BaseModel, commands.ICommand):
     password1: str
     password2: str
 
-    @validator('password2')
-    def passwords_match(cls, password_value, values, **kwargs):
-        if 'password1' in values and password_value != values['password1']:
-            raise ValueError('passwords do not match')
+    @validator("password2")
+    def passwords_valid(cls, value, values, **kwargs):  # noqa: N805 WPS110
+        """Password validation."""
+        is_matched = "password1" in values and value == values["password1"]
+        if not is_matched:
+            raise ValueError("passwords do not match")
 
-        if password_value:
-            password_validation.validate_password(password_value)
+        if value:
+            password_validation.validate_password(value)
 
 
 @dataclass(frozen=True)

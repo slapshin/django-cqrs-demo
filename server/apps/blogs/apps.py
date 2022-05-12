@@ -12,8 +12,9 @@ class AppConfig(BaseAppConfig):
     verbose_name = _("VN__BLOGS")
 
     def ready(self):
-        from apps.blogs.logic.queries.main import QUERIES  # noqa: WPS433
+        """App ready callback."""
         from apps.blogs.logic.commands.main import COMMANDS  # noqa: WPS433
+        from apps.blogs.logic.queries.main import QUERIES  # noqa: WPS433
 
         super().ready()
 

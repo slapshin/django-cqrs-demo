@@ -9,18 +9,21 @@ from apps.users.logic.commands import logout
 
 
 class _Form(forms.Form):
-    pass
+    """Empty form."""
 
 
 class View(BaseCommandView):
+    """Logout view."""
+
     command = logout.Command
     form = _Form
 
-    def get_command(
+    def create_command(
         self,
         request: HttpRequest,
         form: _Form,
     ) -> commands.ICommand:
+        """Create command to execute."""
         return self.command(
             user_id=self.request.user.id,
         )
@@ -31,5 +34,6 @@ class View(BaseCommandView):
         form: _Form,
         command_result: logout.CommandResult,
     ) -> HttpResponse:
+        """Handle success command execution."""
         auth.logout(request)
         return redirect("blogs:home")

@@ -14,9 +14,8 @@ class UserAdmin(DjangoUserAdmin):
         "is_active",
         "is_staff",
     )
-    list_filter = ("is_active", "is_staff", "is_active")
-    ordering = ("email",)
-    search_fields = ("email",)
+    list_filter = ("is_active", "is_staff")
+    ordering = ("-last_login",)
     add_fieldsets = (
         (
             None,
