@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="col-md-8">
+        {% for post in instances %}
+            <div class="card mb-4">
+                <div class="card-body{% if post.status == "draft" %} text-muted{% endif %}">
+                    <h2 class="card-title">{{ post.title }}</h2>
+                    <p class="card-text text-muted h6">{{ post.author }} | {{ post.created_at }} </p>
+                    <p class="card-text">{{ post.content|slice:":200" }}</p>
+                    <a href="{% url 'blogs:post_detail' post.id %}" class="btn btn-primary">Read More &rarr;</a>
+                    {% if post.author == user %}
+                        <a href="{% url 'blogs:post_edit' post.id %}" class="btn btn-primary">Edit</a>
+                        <form class="d-inline" method="POST" action="{% url 'blogs:post_delete' post.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

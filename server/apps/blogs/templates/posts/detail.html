@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>
+        {% if instance %}
+            {{ instance.title }}
+        {% else %}
+            Post not found
+        {% endif %}
+    </title>
+{% endblock title %}
+
+{% block content %}
+    <div class="col-md-8">
+        {% if instance %}
+            <div>
+                <h1>{{ instance.title }}</h1>
+                <p class="text-muted">{{ instance.author }} | {{ instance.created_at }}</p>
+                <p class="card-text ">{{ instance.content | safe }}</p>
+            </div>
+        {% else %}
+            <h1>Post not found</h1>
+        {% endif %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,127 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-10 16:32+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "VN__BLOGS"
+msgstr "Blogs"
+
+msgid "VN__TITLE"
+msgstr "Title"
+
+msgid "HT__TITLE"
+msgstr "Is active"
+
+msgid "VN__CONTENT"
+msgstr "Content"
+
+msgid "HT__CONTENT"
+msgstr "Content"
+
+msgid "VN__CREATED_AT"
+msgstr "Created at"
+
+msgid "HT__CREATED_AT"
+msgstr " "
+
+msgid "VN__UPDATED_AT"
+msgstr "Updated at"
+
+msgid "HT__UPDATED_AT"
+msgstr " "
+
+msgid "VN__AUTHOR"
+msgstr "Author"
+
+msgid "HT__AUTHOR"
+msgstr " "
+
+msgid "VN__POST"
+msgstr "Post"
+
+msgid "VN__POSTS"
+msgstr "Posts"
+
+msgid "VN__CORE"
+msgstr "Core"
+
+msgid "MSG__INVALID_INPUT"
+msgstr ""
+
+msgid "MSG__OPERATION_NOT_PERMITTED"
+msgstr ""
+
+msgid "MSG__NOT_FOUND_ERROR"
+msgstr ""
+
+msgid "VN__USERS"
+msgstr "User"
+
+msgid "VN__USER_MUST_HAVE_A_LOGIN"
+msgstr "User must have a login"
+
+msgid "VN__TOKEN"
+msgstr "Token"
+
+msgid "VN__TOKENS"
+msgstr "Tokens"
+
+msgid "VN__LOGIN"
+msgstr "Login"
+
+msgid "HT__LOGIN"
+msgstr "Login"
+
+msgid "VN__NAME"
+msgstr "Name"
+
+msgid "HT__NAME"
+msgstr "Name"
+
+msgid "VN__EMAIL"
+msgstr "Email"
+
+msgid "HT__EMAIL"
+msgstr "Email"
+
+msgid "VN__IS_STAFF"
+msgstr "Is staff"
+
+msgid "HT__IS_STAFF"
+msgstr "Is staff"
+
+msgid "VN__IS_ACTIVE"
+msgstr "Is active"
+
+msgid "HT__IS_ACTIVE"
+msgstr "Is active"
+
+msgid "VN__USER"
+msgstr "User"
+
+msgid "MSG_UNABLE_TO_LOGIN_WITH_PROVIDED_CREDENTIALS"
+msgstr "Unable to login with provded credentials."
+
+msgid "MSG_MUST_INCLUDE_LOGIN_AND_PASSWORD"
+msgstr "Please, include login and password."
+
+msgid "MESSAGE__ENGLISH"
+msgstr "English"
+
+msgid "VN__ADMIN_DASHBOARD"
+msgstr "Admin dashboard"

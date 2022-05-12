@@ -1,0 +1,68 @@
+[tool.poetry]
+name = "django_cqrs_demo"
+version = "0.1.0"
+description = ""
+authors = ["Lapshin Stanislav"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-decouple = "*"
+psycopg2-binary = "*"
+pymemcache = "*"
+django = "*"
+django-health-check = "*"
+django-cors-headers = "*"
+django_extensions = "*"
+django-split-settings = "*"
+django-model-utils = "*"
+django-filter = "*"
+djangorestframework = "*"
+drf-yasg = "*"
+uWSGI = "*"
+injector = "*"
+redis = "*"
+flower = "*"
+celery = "*"
+pydantic = "^1.9.0"
+django-crispy-forms = "^1.14.0"
+crispy-bootstrap5 = "^0.6"
+
+[tool.poetry.dev-dependencies]
+mypy = "*"
+polint = "*"
+dennis = "*"
+xenon = "*"
+safety = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-django = "*"
+pytest-xdist = "*"
+httpretty = "*"
+factory-boy = "*"
+flake8 = "*"
+flake8-pytest = "*"
+flake8-django = "*"
+flake8-pytest-style = "*"
+wemake-python-styleguide = "*"
+black = "*"
+flake8-class-attributes-order = "*"
+types-requests = "*"
+types-python-dateutil = "*"
+
+[tool.black]
+line-length = 79
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+    | \.git          # root of the project
+    | \.mypy_cache
+    | \.pytest_cache
+    | .*\/migrations
+  )/
+)
+'''
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
