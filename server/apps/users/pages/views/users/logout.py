@@ -25,7 +25,7 @@ class View(BaseCommandView):
     ) -> commands.ICommand:
         """Create command to execute."""
         return self.command(
-            user_id=self.request.user.id,
+            user_id=request.user.id if request.user.is_authenticated else None,
         )
 
     def handle_command_success(
@@ -36,4 +36,12 @@ class View(BaseCommandView):
     ) -> HttpResponse:
         """Handle success command execution."""
         auth.logout(request)
+        return redirect("blogs:home")
+
+    def handle_command_fail(
+        self,
+        request: HttpRequest,
+        form: forms.BaseForm,
+    ) -> HttpResponse:
+        """Handle failed command execution."""
         return redirect("blogs:home")

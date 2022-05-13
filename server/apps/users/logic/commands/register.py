@@ -33,7 +33,7 @@ class Command(BaseModel, commands.ICommand):
         """Password validation."""
         is_matched = "password1" in values and value == values["password1"]
         if not is_matched:
-            raise ValueError("passwords do not match")
+            raise ValueError("Passwords do not match")
 
         if value:
             password_validation.validate_password(value)

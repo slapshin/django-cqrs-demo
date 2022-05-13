@@ -1,4 +1,4 @@
-from django.contrib import auth, messages
+from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
@@ -12,7 +12,7 @@ from apps.users.models import User
 class _Form(UserCreationForm):
     class Meta:
         model = User
-        fields = ["email", "password1", "password2"]
+        fields = ("email", "password1", "password2")
 
 
 class View(BaseCommandView):
@@ -41,6 +41,5 @@ class View(BaseCommandView):
         command_result: register.CommandResult,
     ) -> HttpResponse:
         """Handle success command execution."""
-        messages.success(request, "Registration successful.")
         auth.login(request, command_result.user)
         return redirect("blogs:home")
