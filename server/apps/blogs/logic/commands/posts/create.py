@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-from pydantic import BaseModel
-
 from apps.blogs.models import Post
 from apps.blogs.models.enums import PostStatus
 from apps.core.logic import commands
@@ -9,7 +7,7 @@ from apps.core.logic.errors import AccessDeniedApplicationError
 from apps.users.models import User
 
 
-class Command(BaseModel, commands.ICommand):
+class Command(commands.BaseCommand):
     """Create post command."""
 
     user_id: int | None

@@ -1,13 +1,12 @@
 from dataclasses import dataclass
 
 from django.contrib.auth import authenticate
-from pydantic import BaseModel
 
 from apps.core.logic import commands
 from apps.users.models import User
 
 
-class Command(BaseModel, commands.ICommand):
+class Command(commands.BaseCommand):
     """Login command."""
 
     username: str

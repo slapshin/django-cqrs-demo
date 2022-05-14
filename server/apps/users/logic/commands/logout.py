@@ -1,12 +1,10 @@
 from dataclasses import dataclass
 
-from pydantic import BaseModel
-
 from apps.core.logic import commands
 from apps.core.logic.errors import AccessDeniedApplicationError
 
 
-class Command(BaseModel, commands.ICommand):
+class Command(commands.BaseCommand):
     """Logout command."""
 
     user_id: int | None

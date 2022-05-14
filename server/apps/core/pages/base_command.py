@@ -6,6 +6,7 @@ from django.views.generic.base import ContextMixin, TemplateResponseMixin
 
 from apps.core.errors import BaseError
 from apps.core.logic import commands, queries
+from apps.core.logic.errors import AccessDeniedApplicationError
 from apps.core.pages.base import BaseView
 
 
@@ -41,6 +42,8 @@ class BaseCommandView(TemplateResponseMixin, ContextMixin, BaseView):
 
             try:
                 command_result = commands.execute_command(command)
+            except AccessDeniedApplicationError:  # noqa: WPS329
+                raise
             except (BaseError, ValueError) as err:
                 form.add_error(None, str(err))
             else:

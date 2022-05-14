@@ -8,14 +8,14 @@ from tests.fixtures.users import DEFAULT_USER_PASSWORD
 
 def test_initial(client: Client):
     """Test register form."""
-    response = client.get("/registration")
+    response = client.get("/registration/")
     assert response.status_code == HTTPStatus.OK
 
 
 def test_success(client: Client, db):
     """Test success registration."""
     response = client.post(
-        "/registration",
+        "/registration/",
         data={
             "email": "user@mail.com",
             "password1": DEFAULT_USER_PASSWORD,
@@ -33,7 +33,7 @@ def test_success(client: Client, db):
 def test_user_already_exists(client: Client, user: User):
     """Test user already exists."""
     response = client.post(
-        "/registration",
+        "/registration/",
         data={
             "email": user.email,
             "password1": DEFAULT_USER_PASSWORD,

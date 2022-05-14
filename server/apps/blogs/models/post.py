@@ -11,7 +11,6 @@ class Post(models.Model):
     class Meta:
         verbose_name = _("VN__POST")
         verbose_name_plural = _("VN__POSTS")
-        unique_together = ("author", "title")
 
     title = models.CharField(
         max_length=255,  # noqa:  WPS432

@@ -8,8 +8,7 @@ from apps.core.logic import queries
 from apps.core.logic.errors import AccessDeniedApplicationError
 
 
-@dataclass(frozen=True)
-class Query(queries.IQuery):
+class Query(queries.BaseQuery):
     """Post retrieve query."""
 
     post_id: int
@@ -35,7 +34,13 @@ class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
         posts = self._build_posts_query(query)
         post = posts.filter(id=query.post_id).first()
 
-        self._check_if_post_allowed(query, post)
+        is_allowed = (
+            not post
+            or not query.only_owner
+            or (post.author_id == query.user_id)
+        )
+        if not is_allowed:
+            post = None
 
         return QueryResult(
             instance=post,
@@ -55,12 +60,3 @@ class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
             posts = posts.filter(models.Q(status=PostStatus.PUBLISHED))
 
         return posts
-
-    def _check_if_post_allowed(self, query: Query, post: Post | None):
-        is_allowed = (
-            not post
-            or not query.only_owner
-            or (post.author_id == query.user_id)
-        )
-        if not is_allowed:
-            raise AccessDeniedApplicationError()

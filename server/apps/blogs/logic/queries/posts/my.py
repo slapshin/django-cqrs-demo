@@ -7,8 +7,7 @@ from apps.core.logic import queries
 from apps.core.logic.errors import AccessDeniedApplicationError
 
 
-@dataclass(frozen=True)
-class Query(queries.IQuery):
+class Query(queries.BaseQuery):
     """Post list."""
 
     user_id: int | None

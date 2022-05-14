@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from django.contrib.auth import password_validation
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from pydantic import BaseModel, validator
+from pydantic import validator
 
 from apps.core.logic import commands
 from apps.core.logic.errors import BaseApplicationError
@@ -21,7 +21,7 @@ class UserAlreadyExistsError(BaseRegistrationError):
     message = _("MSG__USER_ALREADY_EXISTS")
 
 
-class Command(BaseModel, commands.ICommand):
+class Command(commands.BaseCommand):
     """Register command."""
 
     email: str

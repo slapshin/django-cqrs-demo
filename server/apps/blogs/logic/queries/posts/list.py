@@ -7,11 +7,10 @@ from apps.blogs.models.enums import PostStatus
 from apps.core.logic import queries
 
 
-@dataclass(frozen=True)
-class Query(queries.IQuery):
-    """Post list."""
+class Query(queries.BaseQuery):
+    """Post list query."""
 
-    user_id: int | None = None
+    author_id: int | None = None
 
 
 @dataclass(frozen=True)
@@ -28,8 +27,8 @@ class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
         """Handler."""
         posts = Post.objects.filter(status=PostStatus.PUBLISHED)
 
-        if query.user_id is not None:
-            posts = posts.filter(author_id=query.user_id)
+        if query.author_id is not None:
+            posts = posts.filter(author_id=query.author_id)
 
         posts = posts.order_by("-created_at")
 

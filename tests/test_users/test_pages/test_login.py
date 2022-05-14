@@ -8,14 +8,14 @@ from tests.fixtures.users import DEFAULT_USER_PASSWORD
 
 def test_initial(client: Client):
     """Test login form."""
-    response = client.get("/login")
+    response = client.get("/login/")
     assert response.status_code == HTTPStatus.OK
 
 
 def test_success(client: Client, user: User):
     """Test success login."""
     response = client.post(
-        "/login",
+        "/login/",
         data={
             "username": user.email,
             "password": DEFAULT_USER_PASSWORD,
@@ -29,7 +29,7 @@ def test_success(client: Client, user: User):
 def test_wrong_password(client: Client, user: User):
     """Test wrong password."""
     response = client.post(
-        "/login",
+        "/login/",
         data={
             "username": user.email,
             "password": "bad{0}".format(DEFAULT_USER_PASSWORD),

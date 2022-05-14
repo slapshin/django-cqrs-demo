@@ -3,7 +3,9 @@ from django.contrib import auth
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 
+from apps.core.errors import BaseError
 from apps.core.logic import commands
+from apps.core.logic.errors import AccessDeniedApplicationError
 from apps.core.pages.base_command import BaseCommandView
 from apps.users.logic.commands import logout
 
@@ -45,3 +47,14 @@ class View(BaseCommandView):
     ) -> HttpResponse:
         """Handle failed command execution."""
         return redirect("blogs:home")
+
+    def handle_error(
+        self,
+        request: HttpRequest,
+        err: BaseError,
+    ) -> HttpResponse:
+        """Process errors."""
+        if isinstance(err, AccessDeniedApplicationError):
+            return redirect("blogs:home")
+
+        return super().handle_error(request, err)
