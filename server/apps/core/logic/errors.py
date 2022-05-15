@@ -49,6 +49,13 @@ class AccessDeniedApplicationError(AccessDeniedErrorMixin):
     message = _("MSG__OPERATION_NOT_PERMITTED")
 
 
+class AuthenticationErrorApplicationError(AuthenticationErrorMixin):
+    """Mark the error as auth error."""
+
+    code = "authentication_error"
+    message = _("MSG__AUTHENTICATION_ERROR")
+
+
 class ObjectNotFoundError(BaseApplicationError):
     """Mark the error as not_found error."""
 

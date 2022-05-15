@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from django.contrib.auth import authenticate
 
 from apps.core.logic import commands
+from apps.core.logic.errors import AuthenticationErrorApplicationError
 from apps.users.models import User
 
 
@@ -30,7 +31,7 @@ class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
             password=command.password,
         )
         if user is None:
-            raise ValueError("Invalid username or password.")
+            raise AuthenticationErrorApplicationError()
 
         return CommandResult(
             user=user,

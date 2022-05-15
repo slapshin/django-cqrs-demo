@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-13 13:28+0300\n"
+"POT-Creation-Date: 2022-05-14 19:25+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,6 +69,9 @@ msgstr "Author"
 msgid "HT__AUTHOR"
 msgstr " "
 
+msgid "Invalid page."
+msgstr ""
+
 msgid "VN__CORE"
 msgstr "Core"
 
@@ -78,8 +81,14 @@ msgstr "Invalid input"
 msgid "MSG__OPERATION_NOT_PERMITTED"
 msgstr "Operation not permitted"
 
+msgid "MSG__AUTHENTICATION_ERROR"
+msgstr "Invalid username or password"
+
 msgid "MSG__NOT_FOUND_ERROR"
 msgstr "Object not found"
+
+msgid "Page number is negative or zero."
+msgstr ""
 
 msgid "VN__USERS"
 msgstr "User"

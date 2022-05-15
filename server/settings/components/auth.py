@@ -6,7 +6,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "users.User"
 
-ACCOUNT_USER_MODEL_USERNAME_FIELD = "login"
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "email"
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",

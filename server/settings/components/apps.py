@@ -19,6 +19,7 @@ INSTALLED_APPS = (
     "health_check.storage",
     "crispy_forms",
     "crispy_bootstrap5",
+    "drf_spectacular",
     # apps
     "apps.core",
     "apps.users",
