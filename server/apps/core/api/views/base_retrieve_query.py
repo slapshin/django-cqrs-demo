@@ -1,9 +1,11 @@
+import abc
+
 from rest_framework.exceptions import NotFound
 
 from apps.core.api.views import BaseQueryView
 
 
-class BaseRetrieveQueryView(BaseQueryView):
+class BaseRetrieveQueryView(BaseQueryView, metaclass=abc.ABCMeta):
     """Base retrieve query view."""
 
     action = "retrieve"

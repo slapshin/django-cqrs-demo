@@ -1,3 +1,4 @@
+import abc
 from dataclasses import dataclass
 
 from pydantic import BaseModel
@@ -8,5 +9,5 @@ class ICommand:
     """Command interface."""
 
 
-class BaseCommand(BaseModel, ICommand):
+class BaseCommand(BaseModel, ICommand, metaclass=abc.ABCMeta):
     """Base command."""

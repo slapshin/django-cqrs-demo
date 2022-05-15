@@ -1,3 +1,4 @@
+import abc
 import typing as ty
 from http import HTTPStatus
 
@@ -11,7 +12,7 @@ from apps.core.api.views.base_api import BaseAPIView
 from apps.core.logic import queries
 
 
-class BaseQueryView(BaseAPIView):  # noqa: WPS214
+class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     """Base query view."""
 
     query: ty.ClassVar[ty.Type[queries.IQuery]] = None

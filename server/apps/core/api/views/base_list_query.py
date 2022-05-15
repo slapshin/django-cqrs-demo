@@ -1,3 +1,5 @@
+import abc
+
 from django.core.paginator import InvalidPage
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -25,7 +27,7 @@ class _PageSerializer(serializers.Serializer):
         return fields
 
 
-class BaseListQueryView(BaseQueryView):
+class BaseListQueryView(BaseQueryView, metaclass=abc.ABCMeta):
     """Base class for list api requests."""
 
     action = "list"

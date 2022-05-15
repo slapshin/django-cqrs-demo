@@ -1,3 +1,4 @@
+import abc
 import types
 import typing as ty
 from http import HTTPStatus
@@ -27,7 +28,7 @@ _ERRORS_CODES_MAP = types.MappingProxyType(
 )
 
 
-class BaseAPIView(views.APIView):
+class BaseAPIView(views.APIView, metaclass=abc.ABCMeta):
     """Base api view."""
 
     swagger_schema: SwaggerSchema

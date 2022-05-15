@@ -18,7 +18,7 @@ SwaggerSchemaResponse = ty.Union[
 class SwaggerSchema:
     """Swagger schema."""
 
-    responses: ty.Dict[int, ty.Optional[SwaggerSchemaResponse]]
+    responses: ty.Dict[int, SwaggerSchemaResponse | None]
     request_body: ty.Any = None
     query_serializer: ty.Any = None
     operation_description: str | None = None
@@ -27,11 +27,3 @@ class SwaggerSchema:
 
 class SchemaGenerator(BaseSchemaGenerator):
     """Schema generator."""
-
-    def _get_paths_and_endpoints(self):
-        endpoints = super()._get_paths_and_endpoints()
-        return [
-            endpoint
-            for endpoint in endpoints
-            if not endpoint[0].startswith("/admin")
-        ]

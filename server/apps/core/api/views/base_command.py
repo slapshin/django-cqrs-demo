@@ -1,3 +1,4 @@
+import abc
 import typing as ty
 from http import HTTPStatus
 
@@ -11,7 +12,7 @@ from apps.core.api.views.base_api import BaseAPIView
 from apps.core.logic import commands
 
 
-class BaseCommandView(BaseAPIView):  # noqa: WPS214
+class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     """Base command view."""
 
     command: ty.ClassVar[ty.Type[commands.ICommand]] = None
