@@ -1,6 +1,5 @@
 import abc
 import types
-import typing as ty
 from http import HTTPStatus
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -32,7 +31,6 @@ class BaseAPIView(views.APIView, metaclass=abc.ABCMeta):
     """Base api view."""
 
     swagger_schema: SwaggerSchema
-    required_scopes: ty.Tuple[str] = ()
 
     def initial(self, request: Request, *args, **kwargs):
         """Init request."""
