@@ -74,10 +74,6 @@ jobs:
         run: |
           docker load --input ${{ env.TEST_IMAGE_PATH }}
 
-      - name: Local
-        run: |
-          docker run ${{ env.TEST_IMAGE_NAME }} ls -l locale/en/LC_MESSAGES
-
       - name: Lint
         run: |
           docker run ${{ env.TEST_IMAGE_NAME }} make lint
