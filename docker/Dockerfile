@@ -80,6 +80,6 @@ FROM base as test
 
 RUN export DJANGO_ENV=build \
     && python manage.py compilemessages \
-    poetry install --no-interaction --no-ansi
+    && poetry install --no-interaction --no-ansi
 
 COPY . .
