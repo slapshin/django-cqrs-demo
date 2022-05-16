@@ -76,7 +76,7 @@ jobs:
 
       - name: Local
         run: |
-          docker run ${{ env.TEST_IMAGE_NAME }} ls -l locale 
+          docker run ${{ env.TEST_IMAGE_NAME }} ls -l locale/en
 
       - name: Lint
         run: |
