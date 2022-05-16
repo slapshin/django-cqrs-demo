@@ -46,8 +46,8 @@ jobs:
           push: false
           tags: ${{ env.TEST_IMAGE_NAME }}
           target: test
-          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:_buildcache
-          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:_buildcache,mode=max
+#          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:_buildcache
+#          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:_buildcache,mode=max
           outputs: type=docker,dest=${{ env.TEST_IMAGE_PATH }}
 
       - name: Upload artifact
