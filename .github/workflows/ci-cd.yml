@@ -1,0 +1,145 @@
+name: CI/CD
+
+on: [ pull_request, push ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ghcr.io/${{ github.repository }}
+  TEST_IMAGE_NAME: app_test:${{ github.sha }}
+  TEST_IMAGE_ARTIFACT: test_image_${{ github.sha }}
+  TEST_IMAGE_PATH: /tmp/test_image.tar
+
+jobs:
+  pre_build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - uses: hadolint/hadolint-action@v1.6.0
+        with:
+          dockerfile: docker/Dockerfile
+
+
+  build_test_image:
+    runs-on: ubuntu-20.04
+    needs: pre_build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build test Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: false
+          tags: ${{ env.TEST_IMAGE_NAME }}
+          target: test
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:_buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:_buildcache,mode=max
+          outputs: type=docker,dest=${{ env.TEST_IMAGE_PATH }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.TEST_IMAGE_ARTIFACT }}
+          path: ${{ env.TEST_IMAGE_PATH }}
+          retention-days: 1
+
+  lint:
+    runs-on: ubuntu-20.04
+    needs: build_test_image
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.TEST_IMAGE_ARTIFACT }}
+          path: /tmp
+
+      - name: Load Docker image
+        run: |
+          docker load --input ${{ env.TEST_IMAGE_PATH }}
+      - name: Lint
+        run: |
+          docker run ${{ env.TEST_IMAGE_NAME }} make lint
+
+  test:
+    runs-on: ubuntu-20.04
+    needs: build_test_image
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.TEST_IMAGE_ARTIFACT }}
+          path: /tmp
+
+      - name: Load Docker image
+        run: |
+          docker load --input ${{ env.TEST_IMAGE_PATH }}
+
+      - name: Test
+        env:
+          APP_TEST_IMAGE: ${{ env.TEST_IMAGE_NAME }}
+        run: |
+          docker-compose -f ci/docker-compose.yml up --exit-code-from app
+
+  build:
+    runs-on: ubuntu-20.04
+    needs: [ lint, test ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,priority=300
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+
+      - name: Update .dockerignore
+        run: cat docker/.dockerignore.production >> .dockerignore
+
+      - name: Build production and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          target: production
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:_buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:_buildcache,mode=max
