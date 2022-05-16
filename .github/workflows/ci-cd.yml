@@ -73,6 +73,11 @@ jobs:
       - name: Load Docker image
         run: |
           docker load --input ${{ env.TEST_IMAGE_PATH }}
+
+      - name: Local
+        run: |
+          docker run ${{ env.TEST_IMAGE_NAME }} ls -l locale 
+
       - name: Lint
         run: |
           docker run ${{ env.TEST_IMAGE_NAME }} make lint
