@@ -78,6 +78,8 @@ CMD ["/bin/bash", "docker/server/backend.sh"]
 
 FROM base as test
 
-RUN poetry install --no-interaction --no-ansi
+RUN export DJANGO_ENV=build \
+    && python manage.py compilemessages \
+    poetry install --no-interaction --no-ansi
 
 COPY . .
