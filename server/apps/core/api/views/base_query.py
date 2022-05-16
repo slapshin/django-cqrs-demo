@@ -15,14 +15,14 @@ from apps.core.logic import queries
 class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     """Base query view."""
 
-    query: ty.ClassVar[ty.Type[queries.IQuery]] = None
+    query: ty.ClassVar[ty.Type[queries.IQuery]]
     action: str = ""
-    output_serializer: ty.ClassVar[ty.Type[Serializer]] = None
-    input_serializer: ty.ClassVar[ty.Type[Serializer]] = None
-    success_status = HTTPStatus.OK
+    output_serializer: ty.ClassVar[ty.Type[Serializer]]
+    input_serializer: ty.ClassVar[ty.Type[Serializer]]
+    success_status: HTTPStatus = HTTPStatus.OK
 
     @classmethod
-    def get_swagger_schema(cls):
+    def get_swagger_schema(cls) -> SwaggerSchema:
         """Provides swagger schema."""
         kwargs = {}
         if cls.input_serializer:
@@ -34,7 +34,7 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
         )
 
     @classmethod
-    def get_swagger_responses(cls):
+    def get_swagger_responses(cls) -> dict[HTTPStatus, ty.Any]:
         """Provides swagger responses."""
         return {
             cls.success_status: cls.output_serializer,
@@ -43,7 +43,7 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
             HTTPStatus.INTERNAL_SERVER_ERROR: OpenApiTypes.NONE,
         }
 
-    def handle_request(self, request: Request, **kwargs):
+    def handle_request(self, request: Request, **kwargs) -> Response:
         """Handle request."""
         self._input_dto = None
 
@@ -70,18 +70,23 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
 
         return self._input_dto
 
-    def create_output_dto(self, query_result):
+    def create_output_dto(self, query_result) -> dict[str, ty.Any]:
         """Get output dto."""
         return self.create_output_serializer(query_result).data
 
-    def get_serializer_context(self):
+    def get_serializer_context(self) -> dict[str, ty.Any]:
         """Get serializer context."""
         context = super().get_serializer_context()
         context["action"] = self.action or None
 
         return context
 
-    def create_output_serializer(self, query_result, *args, **kwargs):
+    def create_output_serializer(
+        self,
+        query_result,
+        *args,
+        **kwargs,
+    ) -> Serializer:
         """Create output serializer."""
         if not self.output_serializer:
             raise ValueError("'output_serializer' is not defined")
@@ -92,11 +97,11 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
         )
         return self.output_serializer(*args, **kwargs)
 
-    def execute_query(self):
+    def execute_query(self) -> ty.Any:
         """Execute query."""
         query = self.create_query()
         return queries.execute_query(query)
 
-    def get_output_serializer_context(self, query_result):
+    def get_output_serializer_context(self, query_result) -> dict[str, ty.Any]:
         """Create output serializer context."""
         return self.get_serializer_context()

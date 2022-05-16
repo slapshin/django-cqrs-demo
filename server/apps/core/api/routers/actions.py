@@ -3,22 +3,25 @@ from collections import defaultdict
 from dataclasses import dataclass
 
 from django.urls import path
+from django.views import View
 from drf_spectacular.utils import extend_schema, extend_schema_serializer
 from rest_framework import exceptions, views
 from rest_framework.mixins import ListModelMixin
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 
 @dataclass
 class _Route:
     method: str
-    handler: ty.Callable  # noqa: WPS110
+    handler: ty.Callable[[Request], Response]  # noqa: WPS110
 
 
 class _ProxyView(views.APIView):  # noqa: WPS338
-    routes = None
+    routes: list[_Route] | None = None
 
     @classmethod
-    def as_view(cls, **initkwargs):
+    def as_view(cls, **initkwargs) -> View:
         view = super().as_view(**initkwargs)
         view.cls = cls._build_mocked_view_cls(  # noqa: WPS117
             initkwargs["routes"],
@@ -29,9 +32,10 @@ class _ProxyView(views.APIView):  # noqa: WPS338
         return view
 
     @classmethod
-    def _prepare_route(cls, view, route):
+    def _prepare_route(cls, view: View, route: _Route):
+        func = route.handler
         try:
-            schema = route.handler.view_class.get_swagger_schema()
+            schema = func.view_class.get_swagger_schema()  # type: ignore
         except AttributeError:
             return
 
@@ -49,7 +53,7 @@ class _ProxyView(views.APIView):  # noqa: WPS338
         )(view)
 
     @classmethod
-    def _get_scheme_responses(cls, scheme):
+    def _get_scheme_responses(cls, scheme) -> dict[int, str]:
         return {
             status.value: status.phrase
             if response_type is None
@@ -58,17 +62,24 @@ class _ProxyView(views.APIView):  # noqa: WPS338
         }
 
     @classmethod
-    def _build_mocked_view_cls(cls, routes):
+    def _build_mocked_view_cls(cls, routes: list[_Route]) -> type:
         mock_attrs = {}
         mock_base_classes = [views.APIView]
         http_method_names = []
         for route in routes:
             mock_attrs[route.method] = route.handler
             http_method_names.append(route.method)
-            if getattr(route.handler.view_class, "action", "") == "list":
+
+            view_action = getattr(
+                route.handler.view_class,  # type: ignore
+                "action",
+                "",
+            )
+
+            if view_action == "list":
                 mock_base_classes.append(ListModelMixin)
 
-        mock_attrs["http_method_names"] = http_method_names
+        mock_attrs["http_method_names"] = http_method_names  # type: ignore
         return type(
             "MockedApiView",
             tuple(mock_base_classes),
@@ -82,7 +93,12 @@ class _ProxyView(views.APIView):  # noqa: WPS338
 
         return self._method_not_allowed_response(request, *args, **kwargs)
 
-    def _method_not_allowed_response(self, request, *args, **kwargs):
+    def _method_not_allowed_response(
+        self,
+        request: Request,
+        *args,
+        **kwargs,
+    ) -> Response:
         response = self.handle_exception(
             exceptions.MethodNotAllowed(request.method),
         )
@@ -95,7 +111,10 @@ class _ProxyView(views.APIView):  # noqa: WPS338
         )
         return self.response
 
-    def _get_route_for_request(self, request):
+    def _get_route_for_request(self, request: Request) -> _Route | None:
+        if not self.routes:
+            return None
+
         return next(
             (
                 route

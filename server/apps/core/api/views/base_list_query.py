@@ -1,4 +1,5 @@
 import abc
+import typing as ty
 
 from django.core.paginator import InvalidPage
 from django.db import models
@@ -16,7 +17,12 @@ from apps.users.api.pagination.query import ListPagination
 class _PageSerializer(serializers.Serializer):
     count = serializers.IntegerField(allow_null=True)
 
-    def __init__(self, instances_serializer, *args, **kwargs):
+    def __init__(
+        self,
+        instances_serializer: ty.Type[serializers.Serializer],
+        *args,
+        **kwargs,
+    ):
         self._instances_serializer = instances_serializer
         super().__init__(*args, **kwargs)
 
@@ -59,7 +65,7 @@ class BaseListQueryView(BaseQueryView, metaclass=abc.ABCMeta):
 
         return Response(object_list)
 
-    def create_output_dto(self, query_result):
+    def create_output_dto(self, query_result) -> dict[str, ty.Any]:
         """Creates output dto based on query result."""
         output_serializer = self.create_output_serializer(
             query_result,

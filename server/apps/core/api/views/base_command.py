@@ -15,13 +15,13 @@ from apps.core.logic import commands
 class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     """Base command view."""
 
-    command: ty.ClassVar[ty.Type[commands.ICommand]] = None
-    output_serializer: ty.ClassVar[ty.Type[Serializer]] = None
-    input_serializer: ty.ClassVar[ty.Type[Serializer]] = None
-    success_status = HTTPStatus.OK
+    command: ty.ClassVar[ty.Type[commands.ICommand]]
+    output_serializer: ty.ClassVar[ty.Type[Serializer] | None] = None
+    input_serializer: ty.ClassVar[ty.Type[Serializer]]
+    success_status: HTTPStatus = HTTPStatus.OK
 
     @classmethod
-    def get_swagger_schema(cls):
+    def get_swagger_schema(cls) -> SwaggerSchema:
         """Returns swagger schema."""
         kwargs = {}
         if cls.input_serializer:
@@ -33,7 +33,7 @@ class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
         )
 
     @classmethod
-    def get_swagger_responses(cls):
+    def get_swagger_responses(cls) -> dict[HTTPStatus, ty.Any]:
         """Returns swagger responses."""
         return {
             HTTPStatus.BAD_REQUEST: OpenApiTypes.NONE,
@@ -78,7 +78,7 @@ class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
 
         return serializer.validated_data
 
-    def create_output_dto(self, command_result):
+    def create_output_dto(self, command_result) -> dict[str, ty.Any]:
         """Build output dto from command result."""
         if not self.output_serializer:
             raise ValueError("'output_serializer' is not defined")
@@ -88,6 +88,6 @@ class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
             context=self.get_serializer_context(),
         ).data
 
-    def get_response_status(self, command_result):
+    def get_response_status(self, command_result) -> HTTPStatus:
         """Returns response status based on command result."""
         return self.success_status

@@ -70,7 +70,7 @@ msgid "HT__AUTHOR"
 msgstr " "
 
 msgid "Invalid page."
-msgstr ""
+msgstr "Invalid page"
 
 msgid "VN__CORE"
 msgstr "Core"
@@ -88,7 +88,7 @@ msgid "MSG__NOT_FOUND_ERROR"
 msgstr "Object not found"
 
 msgid "Page number is negative or zero."
-msgstr ""
+msgstr "Page number is negative or zero"
 
 msgid "VN__USERS"
 msgstr "User"

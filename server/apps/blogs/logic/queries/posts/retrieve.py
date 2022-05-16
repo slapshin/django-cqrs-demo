@@ -31,22 +31,11 @@ class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
         if query.only_owner and not query.user_id:
             raise AccessDeniedApplicationError()
 
-        posts = self._build_posts_query(query)
-        post = posts.filter(id=query.post_id).first()
-
-        is_allowed = (
-            not post
-            or not query.only_owner
-            or (post.author_id == query.user_id)
-        )
-        if not is_allowed:
-            post = None
-
         return QueryResult(
-            instance=post,
+            instance=self._get_post(query),
         )
 
-    def _build_posts_query(self, query: Query) -> models.QuerySet:
+    def _get_post(self, query: Query) -> Post | None:
         posts = Post.objects.all()
         if query.user_id:
             posts = posts.filter(
@@ -59,4 +48,11 @@ class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
         else:
             posts = posts.filter(models.Q(status=PostStatus.PUBLISHED))
 
-        return posts
+        post = posts.filter(id=query.post_id).first()
+        if post and not self._is_post_allowed(post, query):
+            return None
+
+        return post
+
+    def _is_post_allowed(self, post: Post, query: Query) -> bool:
+        return not query.only_owner or (post.author_id == query.user_id)
