@@ -4,7 +4,7 @@
 
 The repository contains example of implementation CQRS architecture principles at django project.
 
-## Key principles
+## Architecture principles
 
 - Compromise separation infrastructure from business layers
 - Communication between layers via simple serializable objects
@@ -16,7 +16,20 @@ The repository contains example of implementation CQRS architecture principles a
 
 ## Diagram
 
-...
+```mermaid
+  graph TD;
+      A-->B;
+      A-->C;
+      B-->D;
+      C-->D;
+```
+
+## Code key principles
+
+- typing, linters
+- tests (pytest)
+- single class per file (model per file,...)
+- documentation API
 
 ## Code structure
 
@@ -146,10 +159,3 @@ The repository contains example of implementation CQRS architecture principles a
    | 
    |-- apps.py                             # application config 
 ```
-
-## Code key principles
-
-- typing, linters
-- tests (pytest)
-- single class per file (model per file,...) 
-
