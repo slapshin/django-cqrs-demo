@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 from apps.blogs.api.serializers import PostSerializer
 from apps.blogs.logic.commands import posts
+from apps.blogs.models import Post
 from apps.blogs.models.enums import PostStatus
 from apps.core.api.views import BaseCommandView
 from apps.core.logic import commands
@@ -36,6 +37,6 @@ class View(BaseCommandView):
     def get_output_serializer_instance(
         self,
         command_result: posts.create.CommandResult,
-    ):
+    ) -> Post:
         """Get output serializer instance."""
         return command_result.instance
