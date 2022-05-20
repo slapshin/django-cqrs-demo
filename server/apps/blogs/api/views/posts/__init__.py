@@ -1,1 +1,1 @@
-from . import list, delete, create
+from . import list, delete, create, retrieve, update
