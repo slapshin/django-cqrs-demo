@@ -88,6 +88,6 @@ class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
             context=self.get_serializer_context(),
         ).data
 
-    def get_output_serializer_instance(self, command_result):
+    def get_output_serializer_instance(self, command_result) -> ty.Any:
         """Get output serializer instance."""
         return command_result
