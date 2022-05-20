@@ -8,10 +8,10 @@ from rest_framework import serializers
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
+from apps.core.api.pagination.query import ListPagination
 from apps.core.api.serializers.input.pagination import PaginationMixin
 from apps.core.api.views import BaseQueryView
 from apps.core.logic.queries.types import Pagination
-from apps.users.api.pagination.query import ListPagination
 
 
 class _PageSerializer(serializers.Serializer):
