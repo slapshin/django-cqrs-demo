@@ -16,7 +16,6 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     """Base query view."""
 
     query: ty.ClassVar[ty.Type[queries.IQuery]]
-    action: str = ""
     output_serializer: ty.ClassVar[ty.Type[Serializer]]
     input_serializer: ty.ClassVar[ty.Type[Serializer]]
     success_status: HTTPStatus = HTTPStatus.OK
@@ -73,13 +72,6 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     def create_output_dto(self, query_result) -> dict[str, ty.Any]:
         """Get output dto."""
         return self.create_output_serializer(query_result).data
-
-    def get_serializer_context(self) -> dict[str, ty.Any]:
-        """Get serializer context."""
-        context = super().get_serializer_context()
-        context["action"] = self.action or None
-
-        return context
 
     def create_output_serializer(
         self,

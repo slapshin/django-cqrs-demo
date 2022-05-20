@@ -10,6 +10,5 @@ class UserFactory(factory.django.DjangoModelFactory):
         model = User
 
     email = factory.Sequence(lambda index: "user_{0}@mail.com".format(index))
-    name = factory.Faker("name")
     is_staff = False
     is_active = True

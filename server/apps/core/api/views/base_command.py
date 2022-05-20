@@ -58,7 +58,7 @@ class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
 
         return Response(
             data=response_data,
-            status=self.get_response_status(command_result),
+            status=self.success_status,
         )
 
     def create_command(self) -> commands.ICommand:
@@ -84,10 +84,10 @@ class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
             raise ValueError("'output_serializer' is not defined")
 
         return self.output_serializer(
-            command_result,
+            self.get_output_serializer_instance(command_result),
             context=self.get_serializer_context(),
         ).data
 
-    def get_response_status(self, command_result) -> HTTPStatus:
-        """Returns response status based on command result."""
-        return self.success_status
+    def get_output_serializer_instance(self, command_result):
+        """Get output serializer instance."""
+        return command_result
