@@ -10,6 +10,7 @@ from apps.core.logic.errors import (
     BaseApplicationError,
     ValidationApplicationError,
 )
+from apps.users.logic.commands import send_registration_notification
 from apps.users.models import User
 
 
@@ -56,6 +57,9 @@ class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
         user.full_clean()
         user.save()
 
+        commands.execute_command(
+            send_registration_notification.Command(user_id=user.id),
+        )
         return CommandResult(
             user=user,
         )

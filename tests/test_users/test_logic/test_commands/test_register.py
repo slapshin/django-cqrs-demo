@@ -62,3 +62,22 @@ def test_passwords_not_matched(user):
                 password2="pass1",
             ),
         )
+
+
+def test_email(db, mailoutbox):
+    """Test email sending."""
+    command_result = commands.execute_command(
+        register.Command(
+            email="user@mail.com",
+            password1="passpass",
+            password2="passpass",
+        ),
+    )
+    user = command_result.user
+
+    assert len(mailoutbox) == 1
+
+    email = mailoutbox[0]
+    assert email.subject == "Successful registration"
+    assert email.body == "You have successfully registered"
+    assert email.to == [user.email]
