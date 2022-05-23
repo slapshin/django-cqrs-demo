@@ -14,7 +14,7 @@ The repository contains example of implementation CQRS architecture principles a
 - wide using interfaces, dependency injection
 - keep the usual django folder organization
 
-## Diagrams
+## Workflow diagrams
 
 ### API, pages 
 
@@ -40,6 +40,7 @@ The repository contains example of implementation CQRS architecture principles a
 - single class per file (model per file,...)
 - documentation API
 - separate view per API method
+- reduction of cognitive load by small modules
 
 ## Code structure
 

@@ -4,7 +4,7 @@ from apps.blogs.models import Post
 from apps.core.logic import commands
 from apps.core.logic.errors import (
     AccessDeniedApplicationError,
-    ObjectNotFoundError,
+    ObjectNotFoundApplicationError,
 )
 from apps.users.models import User
 
@@ -34,7 +34,7 @@ class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
         try:
             post = Post.objects.get(id=command.post_id)
         except Post.DoesNotExist:
-            raise ObjectNotFoundError()
+            raise ObjectNotFoundApplicationError()
 
         if post.author != user:
             raise AccessDeniedApplicationError()

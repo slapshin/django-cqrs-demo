@@ -1,4 +1,5 @@
 import abc
+import pprint
 
 from django.utils.translation import gettext_lazy as _
 
@@ -22,42 +23,65 @@ class BaseApplicationError(BaseError, metaclass=abc.ABCMeta):
         super().__init__()
 
 
-class AuthenticationErrorMixin(BaseApplicationError):
-    """Mark the error as authentication error."""
+class ValidationApplicationError(BaseError, metaclass=abc.ABCMeta):
+    """
+    Invalid input error.
 
-
-class AccessDeniedErrorMixin(BaseApplicationError):
-    """Mark the error as forbidden error."""
-
-
-class InvalidInputApplicationError(BaseError, metaclass=abc.ABCMeta):
-    """Invalid input error."""
+    The error represents invalid input data information.
+    """
 
     code = "invalid_input"
     message = _("MSG__INVALID_INPUT")
 
-    def __init__(self, errors):
+    def __init__(self, errors: dict[str, list[str] | str]):
         """Initialize with input errors."""
         super().__init__()
         self.errors = errors
 
+    def __str__(self) -> str:
+        """String presentation."""
+        return pprint.pformat(self.errors, indent=2)
 
-class AccessDeniedApplicationError(AccessDeniedErrorMixin):
-    """Mark the error as forbid error."""
+
+class AccessDeniedApplicationError(BaseApplicationError):
+    """
+    Access forbidden error.
+
+    User has no permissions to execute the action.
+    """
 
     code = "operation_not_permitted"
     message = _("MSG__OPERATION_NOT_PERMITTED")
 
 
-class AuthenticationErrorApplicationError(AuthenticationErrorMixin):
-    """Mark the error as auth error."""
+class UnauthenticatedApplicationError(BaseApplicationError):
+    """
+    User unauthenticated application error.
+
+    The action requires user, but no user was provided.
+    """
+
+    code = "authentication_required"
+    message = _("MSG__OPERATION_NOT_PERMITTED")
+
+
+class AuthenticationApplicationError(BaseApplicationError):
+    """
+    Authentication error.
+
+    Can't authenticate the user.
+    """
 
     code = "authentication_error"
     message = _("MSG__AUTHENTICATION_ERROR")
 
 
-class ObjectNotFoundError(BaseApplicationError):
-    """Mark the error as not_found error."""
+class ObjectNotFoundApplicationError(BaseApplicationError):
+    """
+    Resource not found error.
+
+    If query/command handler can't get object need to process action.
+    """
 
     code = "not_found_error"
     message = _("MSG__NOT_FOUND_ERROR")

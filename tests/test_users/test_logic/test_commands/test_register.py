@@ -1,8 +1,7 @@
 import pytest
-from django.core.exceptions import ValidationError as DjangoValidationError
-from pydantic import ValidationError
 
 from apps.core.logic import commands
+from apps.core.logic.errors import ValidationApplicationError
 from apps.users.logic.commands import register
 
 
@@ -38,7 +37,7 @@ def test_user_already_exists(user):
 def test_short_password(user):
     """Test short password."""
     with pytest.raises(
-        DjangoValidationError,
+        ValidationApplicationError,
         match="This password is too short",
     ):
         commands.execute_command(
@@ -53,7 +52,7 @@ def test_short_password(user):
 def test_passwords_not_matched(user):
     """Test passwords are not matched."""
     with pytest.raises(
-        ValidationError,
+        ValidationApplicationError,
         match="Passwords do not match",
     ):
         commands.execute_command(

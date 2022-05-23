@@ -1,12 +1,15 @@
 from dataclasses import dataclass
 
 from django.contrib.auth import password_validation
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from pydantic import validator
 
 from apps.core.logic import commands
-from apps.core.logic.errors import BaseApplicationError
+from apps.core.logic.errors import (
+    BaseApplicationError,
+    ValidationApplicationError,
+)
 from apps.users.models import User
 
 
@@ -27,16 +30,6 @@ class Command(commands.BaseCommand):
     email: str
     password1: str
     password2: str
-
-    @validator("password2")
-    def passwords_valid(cls, value, values, **kwargs):  # noqa: N805 WPS110
-        """Password validation."""
-        is_matched = "password1" in values and value == values["password1"]
-        if not is_matched:
-            raise ValueError("Passwords do not match")
-
-        if value:
-            password_validation.validate_password(value)
 
 
 @dataclass(frozen=True)
@@ -69,5 +62,19 @@ class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
 
     def _validate_data(self, command: Command) -> None:
         """Validate input data."""
+        if command.password1 != command.password2:
+            raise ValidationApplicationError(
+                {"password2": ["Passwords do not match"]},
+            )
+
+        try:
+            password_validation.validate_password(command.password1)
+        except ValidationError as err:
+            raise ValidationApplicationError(
+                {
+                    "password1": err.messages,
+                },
+            )
+
         if User.objects.filter(email=command.email).exists():
             raise UserAlreadyExistsError()

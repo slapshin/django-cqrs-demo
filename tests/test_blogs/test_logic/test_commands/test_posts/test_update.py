@@ -5,7 +5,7 @@ from apps.blogs.models.enums import PostStatus
 from apps.core.logic import commands
 from apps.core.logic.errors import (
     AccessDeniedApplicationError,
-    ObjectNotFoundError,
+    ObjectNotFoundApplicationError,
 )
 from apps.users.models import User
 from tests.test_blogs.factories.post import PostFactory
@@ -52,7 +52,7 @@ def test_not_found(user: User):
     """Test post not found."""
     post = PostFactory.create(author=user)
 
-    with pytest.raises(ObjectNotFoundError):
+    with pytest.raises(ObjectNotFoundApplicationError):
         commands.execute_command(
             update.Command(
                 user_id=user.id,
