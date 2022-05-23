@@ -3,6 +3,7 @@ import pytest
 from apps.core.logic import commands
 from apps.core.logic.errors import ValidationApplicationError
 from apps.users.logic.commands import register
+from tests.helpers.db import trigger_on_commit
 
 
 def test_success(db):
@@ -74,6 +75,8 @@ def test_email(db, mailoutbox):
         ),
     )
     user = command_result.user
+
+    trigger_on_commit()
 
     assert len(mailoutbox) == 1
 

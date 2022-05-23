@@ -45,27 +45,18 @@ class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
 
     def execute(self, command: Command) -> CommandResult:
         """Main logic here."""
-        self._validate_data(command)
+        self._validate_command(command)
+        user = self._create_user(command)
 
-        user = User(
-            email=command.email,
-            last_login=timezone.now(),
-            is_active=True,
-            is_staff=False,
-        )
-        user.set_password(command.password1)
-        user.full_clean()
-        user.save()
-
-        commands.execute_command(
+        commands.execute_command_async(
             send_registration_notification.Command(user_id=user.id),
         )
+
         return CommandResult(
             user=user,
         )
 
-    def _validate_data(self, command: Command) -> None:
-        """Validate input data."""
+    def _validate_command(self, command: Command) -> None:
         if command.password1 != command.password2:
             raise ValidationApplicationError(
                 {"password2": ["Passwords do not match"]},
@@ -82,3 +73,16 @@ class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
 
         if User.objects.filter(email=command.email).exists():
             raise UserAlreadyExistsError()
+
+    def _create_user(self, command: Command) -> User:
+        user = User(
+            email=command.email,
+            last_login=timezone.now(),
+            is_active=True,
+            is_staff=False,
+        )
+        user.set_password(command.password1)
+        user.full_clean()
+        user.save()
+
+        return user
