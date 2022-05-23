@@ -157,7 +157,7 @@ The repository contains example of implementation CQRS architecture principles a
    |    |-- ...
    |
    |-- pages/                              # django views modules
-   |    |-- views                          # views 
+   |    |-- views/                         # views 
    |    |     |-- ...
    |    |
    |    |-- urls.py                        # urls routing registration  
