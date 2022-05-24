@@ -1,5 +1,6 @@
 # Index
 
 ## Links
-1. [Architecture](docs/architecture.md)
-2. [Code](docs/code.md)
+
+1. [Architecture](architecture.md)
+2. [Code](code.md)
