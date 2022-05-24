@@ -3,6 +3,7 @@ import pytest
 from apps.core.logic import commands
 from apps.core.logic.errors import ValidationApplicationError
 from apps.users.logic.commands import register
+from apps.users.models import User
 from tests.helpers.db import trigger_on_commit
 
 
@@ -23,7 +24,7 @@ def test_success(db):
     assert not user.is_superuser
 
 
-def test_user_already_exists(user):
+def test_user_already_exists(user: User):
     """Test user already exists."""
     with pytest.raises(register.UserAlreadyExistsError):
         commands.execute_command(
@@ -35,7 +36,7 @@ def test_user_already_exists(user):
         )
 
 
-def test_short_password(user):
+def test_short_password(user: User):
     """Test short password."""
     with pytest.raises(
         ValidationApplicationError,
@@ -50,7 +51,7 @@ def test_short_password(user):
         )
 
 
-def test_passwords_not_matched(user):
+def test_passwords_not_matched(user: User):
     """Test passwords are not matched."""
     with pytest.raises(
         ValidationApplicationError,

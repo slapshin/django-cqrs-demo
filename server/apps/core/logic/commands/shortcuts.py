@@ -12,7 +12,7 @@ def execute_command(command: ICommand):
     return command_bus.dispatch(command)
 
 
-def execute_command_async(command: ICommand):
+def execute_command_async(command: ICommand) -> None:
     """Execute command async."""
     serialized_command = command.serialize()
     command_type = type(command)
@@ -28,6 +28,6 @@ def execute_command_async(command: ICommand):
     )
 
 
-def register_commands(handlers: list[CommandInfo]):
+def register_commands(handlers: list[CommandInfo]) -> None:
     """Register commands handlers at injector."""
     injector.get(ICommandBus).register_many(handlers)

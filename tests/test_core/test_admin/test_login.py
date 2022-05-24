@@ -3,6 +3,7 @@ from http import HTTPStatus
 import pytest
 from django.test import Client
 
+from apps.users.models import User
 from tests.fixtures.users import DEFAULT_USER_PASSWORD
 
 
@@ -12,7 +13,7 @@ def admin_client() -> Client:
     return Client()
 
 
-def test_login(user, admin_client):
+def test_login(user: User, admin_client: Client):
     """Test login in main admin form."""
     user.is_staff = True
     user.set_password(DEFAULT_USER_PASSWORD)

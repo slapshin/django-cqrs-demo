@@ -11,7 +11,7 @@ class AppConfig(BaseAppConfig):
     default = True
     verbose_name = _("VN__CORE")
 
-    def ready(self):
+    def ready(self) -> None:
         """App ready callback."""
         super().ready()
 
