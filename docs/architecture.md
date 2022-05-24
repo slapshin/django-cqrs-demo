@@ -10,9 +10,9 @@
 - wide using interfaces, dependency injection
 - keep the usual django folder organization
 
-## Workflow 
+## Workflow
 
-### API, pages 
+### API, pages
 
 ```mermaid
   sequenceDiagram

@@ -3,3 +3,7 @@ markdown: kramdown
 include:
   - architecture.md
   - code.md
+  - cqrs.md
+  - implementation.md
+  - resources.md
+  - structure.md
