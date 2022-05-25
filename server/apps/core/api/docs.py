@@ -18,9 +18,9 @@ SwaggerSchemaResponse = ty.Union[
 class SwaggerSchema:
     """Swagger schema."""
 
-    responses: ty.Dict[int, SwaggerSchemaResponse | None]
-    request_body: ty.Any = None
-    query_serializer: ty.Any = None
+    responses: dict[int, SwaggerSchemaResponse | None]
+    request_body: ty.Any | None = None
+    query_serializer: ty.Any | None = None
     operation_description: str | None = None
     operation_summary: str | None = None
 

@@ -1,11 +1,10 @@
 from django.contrib import admin
 
 from apps.blogs.models.post import Post
-from apps.core.admin.base import BaseModelAdmin
 
 
 @admin.register(Post)
-class PostAdmin(BaseModelAdmin):
+class PostAdmin(admin.ModelAdmin):
     """Post admin."""
 
     list_display = (

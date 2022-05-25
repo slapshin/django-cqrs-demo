@@ -6,6 +6,9 @@
 - **command bus** - commands dispatcher
 - **query bus** - queries dispatcher
 
+## Main ideas
+
+
 ## Advantages
 - fewer dependencies in each class
 - the principle of sole responsibility (SRP) is respected

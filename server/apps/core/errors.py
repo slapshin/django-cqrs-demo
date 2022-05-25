@@ -7,6 +7,6 @@ class BaseError(Exception, metaclass=abc.ABCMeta):
     code: str
     message: str
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize."""
         super().__init__(self.message)

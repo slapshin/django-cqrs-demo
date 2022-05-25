@@ -8,7 +8,7 @@
 ## About
 There are many theoretical discussions of the implementation of the CQRS approach, but very few examples of the practical implementation of this approach. This repository provides an example of the implementation of the CQRS approach, which is successfully applied and works in many of my projects.
 
-If you have clarifications, questions and ideas, then you are welcome! Let's go together!
+If you have clarifications, questions and ideas, then welcome! Let's go together!
 
 
 ## Links
