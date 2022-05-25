@@ -1,15 +1,5 @@
-import typing as ty
-
-from django.db import models
-
+from apps.core.logic.queries.types import ListQueryResult
 from apps.core.pages.base_query import BaseQueryView
-
-
-@ty.runtime_checkable
-class InstancesQueryResult(ty.Protocol):
-    """Query result with instances queryset field."""
-
-    instances: models.QuerySet
 
 
 class BaseListQueryView(BaseQueryView):
@@ -20,7 +10,9 @@ class BaseListQueryView(BaseQueryView):
         query_result = self.execute_query(self.request)
         context = super().get_context_data(**kwargs)
 
-        if isinstance(query_result, InstancesQueryResult):
-            context["instances"] = query_result.instances
+        if not isinstance(query_result, ListQueryResult):
+            raise ValueError('Query result must have "instances" field')
+
+        context["instances"] = query_result.instances
 
         return context

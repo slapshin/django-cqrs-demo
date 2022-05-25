@@ -1,10 +1,10 @@
 import abc
 import types
+import typing as ty
 from http import HTTPStatus
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
-from rest_framework import exceptions, views
+from rest_framework import views
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -41,7 +41,7 @@ class BaseAPIView(views.APIView, metaclass=abc.ABCMeta):
 
         self.user = None if request.user.is_anonymous else request.user
 
-    def dispatch(self, request: Request, *args, **kwargs) -> HttpResponse:
+    def dispatch(self, request: Request, *args, **kwargs) -> Response:
         """Dispatch request."""
         self.args = args
         self.kwargs = kwargs
@@ -63,32 +63,17 @@ class BaseAPIView(views.APIView, metaclass=abc.ABCMeta):
         )
         return self.response
 
-    def handle_request(self, request: Request, *args, **kwargs):
+    def handle_request(self, request: Request, *args, **kwargs) -> Response:
         """Handle request."""
         raise NotImplementedError()
 
-    def get_serializer_context(self):
+    def get_serializer_context(self) -> dict[str, ty.Any]:
         """Provides serializer context."""
         return {
             "user": self.user,
         }
 
-    def permission_denied(
-        self,
-        request: Request,
-        message: str | None = None,
-        code=None,
-    ):
-        """Handle permission denied error."""
-        is_authenticated = (
-            request.authenticators and not request.successful_authenticator
-        )  # noqa: WPS332
-        if is_authenticated or request.user.is_anonymous:
-            raise exceptions.NotAuthenticated()
-
-        raise exceptions.PermissionDenied(detail=message, code=code)
-
-    def handle_exception(self, err: Exception):
+    def handle_exception(self, err: Exception) -> Response:
         """Handle error."""
         response = None
         if isinstance(err, ValidationApplicationError):  # noqa: WPS223
@@ -100,7 +85,7 @@ class BaseAPIView(views.APIView, metaclass=abc.ABCMeta):
             for error_class, status_code in _ERRORS_CODES_MAP.items():
                 if isinstance(err, error_class):
                     response = Response(
-                        data={"detail": str(err)},
+                        data={"detail": str(err.message)},
                         status=status_code,
                     )
                     break

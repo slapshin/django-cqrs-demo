@@ -13,7 +13,7 @@ class BaseApplicationError(BaseError, metaclass=abc.ABCMeta):
         self,
         code: str | None = None,
         message: str | None = None,
-    ):
+    ) -> None:
         """Initizaling."""
         if code:
             self.code = code
@@ -33,7 +33,7 @@ class ValidationApplicationError(BaseError, metaclass=abc.ABCMeta):
     code = "invalid_input"
     message = _("MSG__INVALID_INPUT")
 
-    def __init__(self, errors: dict[str, list[str] | str]):
+    def __init__(self, errors: dict[str, list[str] | str]) -> None:
         """Initialize with input errors."""
         super().__init__()
         self.errors = errors

@@ -41,10 +41,14 @@ class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
             cls.success_status: cls.output_serializer or OpenApiTypes.NONE,
         }
 
-    def handle_request(self, request: Request, **kwargs):
+    def handle_request(self, request: Request, **kwargs) -> Response:
         """Process request."""
         command = self.create_command()
-        command_result = commands.execute_command(command)
+
+        try:
+            command_result = commands.execute_command(command)
+        except Exception as err:
+            return self.handle_command_error(err)
 
         return self.build_response(command_result)
 
@@ -64,6 +68,10 @@ class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     def create_command(self) -> commands.ICommand:
         """Create command to execute."""
         raise NotImplementedError()
+
+    def handle_command_error(self, err: Exception) -> Response:
+        """Handle any command errors."""
+        raise err
 
     def extract_input_dto(self):
         """Extracts input data."""

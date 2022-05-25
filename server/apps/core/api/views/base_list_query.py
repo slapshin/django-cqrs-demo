@@ -4,6 +4,7 @@ import typing as ty
 from rest_framework.response import Response
 
 from apps.core.api.views import BaseQueryView
+from apps.core.logic.queries.types import ListQueryResult
 
 
 class BaseListQueryView(BaseQueryView, metaclass=abc.ABCMeta):
@@ -25,6 +26,9 @@ class BaseListQueryView(BaseQueryView, metaclass=abc.ABCMeta):
 
     def create_output_dto(self, query_result) -> dict[str, ty.Any]:
         """Creates output dto based on query result."""
+        if not isinstance(query_result, ListQueryResult):
+            raise ValueError('Query result must have "instances" field')
+
         output_serializer = self.create_output_serializer(
             query_result,
             query_result.instances,

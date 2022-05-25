@@ -45,8 +45,18 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     def handle_request(self, request: Request, **kwargs) -> Response:
         """Handle request."""
         self._input_dto = None
+        query = self.create_query()
 
-        return self.build_response(self.execute_query())
+        try:
+            query_result = queries.execute_query(query)
+        except Exception as err:
+            return self.handle_query_error(err)
+
+        return self.build_response(query_result)
+
+    def handle_query_error(self, err: Exception) -> Response:
+        """Handle any query errors."""
+        raise err
 
     def build_response(self, query_result) -> Response:
         """Build response from query result."""
@@ -56,7 +66,7 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
         """Create query to execute."""
         raise NotImplementedError()
 
-    def extract_input_dto(self):
+    def extract_input_dto(self) -> dict[str, ty.Any]:
         """Get input dto."""
         if self._input_dto is None:
             if not self.input_serializer:
@@ -88,11 +98,6 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
             self.get_output_serializer_context(query_result),
         )
         return self.output_serializer(*args, **kwargs)
-
-    def execute_query(self) -> ty.Any:
-        """Execute query."""
-        query = self.create_query()
-        return queries.execute_query(query)
 
     def get_output_serializer_context(self, query_result) -> dict[str, ty.Any]:
         """Create output serializer context."""

@@ -18,7 +18,7 @@ class BaseCommand(BaseModel, ICommand, metaclass=abc.ABCMeta):
     """Base command."""
 
     @classmethod
-    def deserialize(cls, string_data: str) -> "ICommand":
+    def deserialize(cls, string_data: str) -> ICommand:
         """Deserialize object."""
         return cls.parse_raw(string_data)
 
