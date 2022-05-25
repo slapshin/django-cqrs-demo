@@ -70,7 +70,7 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
 
             self._input_dto = serializer.validated_data
 
-        return self._input_dto
+        return self._input_dto  # type: ignore
 
     def create_output_dto(self, query_result) -> dict[str, ty.Any]:
         """Get output dto."""
