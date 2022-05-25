@@ -44,11 +44,7 @@ class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     def handle_request(self, request: Request, **kwargs) -> Response:
         """Process request."""
         command = self.create_command()
-
-        try:
-            command_result = commands.execute_command(command)
-        except Exception as err:
-            return self.handle_command_error(err)
+        command_result = commands.execute_command(command)
 
         return self.build_response(command_result)
 
@@ -68,10 +64,6 @@ class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     def create_command(self) -> commands.ICommand:
         """Create command to execute."""
         raise NotImplementedError()
-
-    def handle_command_error(self, err: Exception) -> Response:
-        """Handle any command errors."""
-        raise err
 
     def extract_input_dto(self):
         """Extracts input data."""

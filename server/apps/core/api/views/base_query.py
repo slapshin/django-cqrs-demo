@@ -45,18 +45,11 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     def handle_request(self, request: Request, **kwargs) -> Response:
         """Handle request."""
         self._input_dto = None
-        query = self.create_query()
 
-        try:
-            query_result = queries.execute_query(query)
-        except Exception as err:
-            return self.handle_query_error(err)
+        query = self.create_query()
+        query_result = queries.execute_query(query)
 
         return self.build_response(query_result)
-
-    def handle_query_error(self, err: Exception) -> Response:
-        """Handle any query errors."""
-        raise err
 
     def build_response(self, query_result) -> Response:
         """Build response from query result."""
