@@ -280,4 +280,3 @@ Add binding from url to view same as standard django mechanism.
 
 - api requests caching
 - CQRS logging, metrics
-- 
