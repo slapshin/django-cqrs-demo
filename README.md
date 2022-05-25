@@ -10,8 +10,7 @@ There are many theoretical discussions of the implementation of the CQRS approac
 
 If you have clarifications, questions and ideas, then welcome! Let's go together!
 
-
 ## Links
-- [Implementation](implementation.md)
-- [CQRS](cqrs.md)
-- [Structure](structure.md)
+- [Implementation](docs/implementation.md)
+- [Structure](docs/structure.md)
+- [Resources](docs/resources.md)
