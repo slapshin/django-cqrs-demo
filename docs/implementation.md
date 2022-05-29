@@ -49,8 +49,13 @@
 #### Query
 
 ```python
+@dataclass(frozen=True)
+class QueryResult:
+    instances: models.QuerySet
+
+
 # query data dto. 
-class Query(queries.BaseQuery):
+class Query(queries.BaseQuery[QueryResult]):
     user_id: int | None
     author_id: int | None = None
 ```
@@ -59,7 +64,7 @@ class Query(queries.BaseQuery):
 
 ```python
 # query handler. 
-class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
+class QueryHandler(queries.IQueryHandler[Query]):
     # must implement `ask` method and return query result.
     def ask(self, query: Query) -> QueryResult:
         ...
@@ -68,19 +73,17 @@ class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
         )
 ```
 
-#### Query result
-```python
-@dataclass(frozen=True)
-class QueryResult:
-    instances: models.QuerySet
-```
-
 ### Write command
 
 #### Command
+
 ```python
+@dataclass(frozen=True)
+class CommandResult:
+    instance: Post
+    
 # command data dto
-class Command(commands.BaseCommand):
+class Command(commands.BaseCommand[CommandResult]):
     ...
     user_id: int | None
     title: str
@@ -88,22 +91,15 @@ class Command(commands.BaseCommand):
 ```
 
 #### Command handler
+
 ```python
-class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
+class CommandHandler(commands.ICommandHandler[Command]):
     # every command handler must implement `execute` method and returns command result.    
     def execute(self, command: Command) -> CommandResult:
         ...
         return CommandResult(
             instance=post,
         )
-
-```
-
-#### Command result
-```python
-@dataclass(frozen=True)
-class CommandResult:
-    instance: Post
 ```
 
 ### Write query API view
