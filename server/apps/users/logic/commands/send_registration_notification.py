@@ -8,22 +8,22 @@ from apps.core.logic.interfaces import IEMailService
 from apps.users.models import User
 
 
-class Command(commands.BaseCommand):
-    """Send registration notification command."""
-
-    user_id: int
-
-
 @dataclass(frozen=True)
 class CommandResult:
     """Send registration notification output dto."""
 
 
-class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
+class Command(commands.BaseCommand[CommandResult]):
+    """Send registration notification command."""
+
+    user_id: int
+
+
+class CommandHandler(commands.ICommandHandler[Command]):
     """Send registration notification command handler."""
 
     @injector.inject
-    def __init__(self, email_service: IEMailService):
+    def __init__(self, email_service: IEMailService) -> None:
         """Initialize."""
         self._email_service = email_service
 

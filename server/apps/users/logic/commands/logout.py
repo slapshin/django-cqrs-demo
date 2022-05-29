@@ -4,18 +4,18 @@ from apps.core.logic import commands
 from apps.core.logic.errors import AccessDeniedApplicationError
 
 
-class Command(commands.BaseCommand):
-    """Logout command."""
-
-    user_id: int | None
-
-
 @dataclass(frozen=True)
 class CommandResult:
     """Logout output dto."""
 
 
-class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
+class Command(commands.BaseCommand[CommandResult]):
+    """Logout command."""
+
+    user_id: int | None
+
+
+class CommandHandler(commands.ICommandHandler[Command]):
     """Logout user."""
 
     def execute(self, command: Command) -> CommandResult:

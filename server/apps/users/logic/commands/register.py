@@ -25,14 +25,6 @@ class UserAlreadyExistsError(BaseRegistrationError):
     message = _("MSG__USER_ALREADY_EXISTS")
 
 
-class Command(commands.BaseCommand):
-    """Register command."""
-
-    email: str
-    password1: str
-    password2: str
-
-
 @dataclass(frozen=True)
 class CommandResult:
     """Register output dto."""
@@ -40,7 +32,15 @@ class CommandResult:
     user: User
 
 
-class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
+class Command(commands.BaseCommand[CommandResult]):
+    """Register command."""
+
+    email: str
+    password1: str
+    password2: str
+
+
+class CommandHandler(commands.ICommandHandler[Command]):
     """Register new user."""
 
     def execute(self, command: Command) -> CommandResult:

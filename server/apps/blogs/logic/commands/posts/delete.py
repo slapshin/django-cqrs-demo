@@ -9,19 +9,19 @@ from apps.core.logic.errors import (
 from apps.users.models import User
 
 
-class Command(commands.BaseCommand):
+@dataclass(frozen=True)
+class CommandResult:
+    """Delete post output dto."""
+
+
+class Command(commands.BaseCommand[CommandResult]):
     """Delete post command."""
 
     user_id: int | None
     post_id: int
 
 
-@dataclass(frozen=True)
-class CommandResult:
-    """Delete post output dto."""
-
-
-class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
+class CommandHandler(commands.ICommandHandler[Command]):
     """Delete post command handler."""
 
     def execute(self, command: Command) -> CommandResult:

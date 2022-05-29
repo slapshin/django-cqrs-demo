@@ -12,8 +12,20 @@ class AppConfig(BaseAppConfig):
 
     def ready(self):
         """App ready callback."""
-        from apps.users.logic.commands.main import COMMANDS  # noqa: WPS433
+        from apps.users.logic.commands import (  # noqa: WPS433
+            login,
+            logout,
+            register,
+            send_registration_notification,
+        )
 
         super().ready()
 
-        register_commands(COMMANDS)
+        register_commands(
+            (
+                register.CommandHandler,
+                login.CommandHandler,
+                logout.CommandHandler,
+                send_registration_notification.CommandHandler,
+            ),
+        )

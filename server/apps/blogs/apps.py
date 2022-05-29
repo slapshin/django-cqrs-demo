@@ -13,10 +13,18 @@ class AppConfig(BaseAppConfig):
 
     def ready(self):
         """App ready callback."""
-        from apps.blogs.logic.commands.main import COMMANDS  # noqa: WPS433
+        from apps.blogs.logic.commands import (  # noqa: WPS433
+            posts as posts_commands,
+        )
         from apps.blogs.logic.queries.main import QUERIES  # noqa: WPS433
 
         super().ready()
 
         register_queries(QUERIES)
-        register_commands(COMMANDS)
+        register_commands(
+            (
+                posts_commands.create.CommandHandler,
+                posts_commands.update.CommandHandler,
+                posts_commands.delete.CommandHandler,
+            ),
+        )

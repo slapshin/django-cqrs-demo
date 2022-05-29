@@ -7,13 +7,6 @@ from apps.core.logic.errors import AuthenticationApplicationError
 from apps.users.models import User
 
 
-class Command(commands.BaseCommand):
-    """Login command."""
-
-    username: str
-    password: str
-
-
 @dataclass(frozen=True)
 class CommandResult:
     """Register output dto."""
@@ -21,7 +14,14 @@ class CommandResult:
     user: User
 
 
-class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
+class Command(commands.BaseCommand[CommandResult]):
+    """Login command."""
+
+    username: str
+    password: str
+
+
+class CommandHandler(commands.ICommandHandler[Command]):
     """Register new user."""
 
     def execute(self, command: Command) -> CommandResult:

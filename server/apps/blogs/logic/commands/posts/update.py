@@ -10,7 +10,14 @@ from apps.core.logic.errors import (
 from apps.users.models import User
 
 
-class Command(commands.BaseCommand):
+@dataclass(frozen=True)
+class CommandResult:
+    """Create post output dto."""
+
+    instance: Post
+
+
+class Command(commands.BaseCommand[CommandResult]):
     """Create post command."""
 
     user_id: int | None
@@ -20,14 +27,7 @@ class Command(commands.BaseCommand):
     status: PostStatus
 
 
-@dataclass(frozen=True)
-class CommandResult:
-    """Create post output dto."""
-
-    instance: Post
-
-
-class CommandHandler(commands.ICommandHandler[Command, CommandResult]):
+class CommandHandler(commands.ICommandHandler[Command]):
     """Register new user."""
 
     def execute(self, command: Command) -> CommandResult:
