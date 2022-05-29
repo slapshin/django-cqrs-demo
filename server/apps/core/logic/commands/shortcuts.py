@@ -3,9 +3,12 @@ import typing as ty
 from django.db import transaction
 
 from apps.core import injector
-from apps.core.logic.commands import ICommand, ICommandBus
-from apps.core.logic.commands.bus import TCommandHandler
-from apps.core.logic.commands.handler import TCommandResult
+from apps.core.logic.commands import (
+    ICommand,
+    ICommandBus,
+    TCommandHandler,
+    TCommandResult,
+)
 from apps.core.tasks.commands import execute_command_async_task
 
 
@@ -15,7 +18,7 @@ def execute_command(command: ICommand[TCommandResult]) -> TCommandResult:
     return command_bus.dispatch(command)
 
 
-def execute_command_async(command: ICommand) -> None:
+def execute_command_async(command: ICommand[TCommandResult]) -> None:
     """Execute command async."""
     serialized_command = command.serialize()
     command_type = type(command)

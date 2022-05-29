@@ -7,12 +7,6 @@ from apps.blogs.models.enums import PostStatus
 from apps.core.logic import queries
 
 
-class Query(queries.BaseQuery):
-    """Post list query."""
-
-    author_id: int | None = None
-
-
 @dataclass(frozen=True)
 class QueryResult:
     """Posts list result."""
@@ -20,7 +14,13 @@ class QueryResult:
     instances: models.QuerySet
 
 
-class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
+class Query(queries.BaseQuery[QueryResult]):
+    """Post list query."""
+
+    author_id: int | None = None
+
+
+class QueryHandler(queries.IQueryHandler[Query]):
     """Posts list query handler."""
 
     def ask(self, query: Query) -> QueryResult:

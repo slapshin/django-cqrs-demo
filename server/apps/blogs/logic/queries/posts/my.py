@@ -7,21 +7,21 @@ from apps.core.logic import queries
 from apps.core.logic.errors import AccessDeniedApplicationError
 
 
-class Query(queries.BaseQuery):
-    """Post list."""
-
-    user_id: int | None
-
-
 @dataclass(frozen=True)
 class QueryResult:
-    """Posts list result."""
+    """User posts list result."""
 
     instances: models.QuerySet
 
 
-class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
-    """Posts list query handler."""
+class Query(queries.BaseQuery[QueryResult]):
+    """User posts list."""
+
+    user_id: int | None
+
+
+class QueryHandler(queries.IQueryHandler[Query]):
+    """User posts list query handler."""
 
     def ask(self, query: Query) -> QueryResult:
         """Handler."""

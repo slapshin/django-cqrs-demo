@@ -48,7 +48,7 @@ class CommandBus(ICommandBus):
 
         if not command_type:
             raise ValueError(
-                'Can\'t determine command type for command handler "{0}"'.format(  # noqa: E501
+                'Can\'t extract command from handler "{0}"'.format(
                     command_handler,
                 ),
             )

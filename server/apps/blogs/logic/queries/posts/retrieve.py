@@ -8,14 +8,6 @@ from apps.core.logic import queries
 from apps.core.logic.errors import AccessDeniedApplicationError
 
 
-class Query(queries.BaseQuery):
-    """Post retrieve query."""
-
-    post_id: int
-    user_id: int | None = None
-    only_owner: bool = False
-
-
 @dataclass(frozen=True)
 class QueryResult:
     """Post retrieve result."""
@@ -23,7 +15,15 @@ class QueryResult:
     instance: Post | None
 
 
-class QueryHandler(queries.IQueryHandler[Query, QueryResult]):
+class Query(queries.BaseQuery[QueryResult]):
+    """Post retrieve query."""
+
+    post_id: int
+    user_id: int | None = None
+    only_owner: bool = False
+
+
+class QueryHandler(queries.IQueryHandler[Query]):
     """Post retrieve query handler."""
 
     def ask(self, query: Query) -> QueryResult:

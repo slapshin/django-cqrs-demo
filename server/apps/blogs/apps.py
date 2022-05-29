@@ -16,11 +16,19 @@ class AppConfig(BaseAppConfig):
         from apps.blogs.logic.commands import (  # noqa: WPS433
             posts as posts_commands,
         )
-        from apps.blogs.logic.queries.main import QUERIES  # noqa: WPS433
+        from apps.blogs.logic.queries import (  # noqa: WPS433
+            posts as posts_queries,
+        )
 
         super().ready()
 
-        register_queries(QUERIES)
+        register_queries(
+            (
+                posts_queries.list.QueryHandler,
+                posts_queries.retrieve.QueryHandler,
+                posts_queries.my.QueryHandler,
+            ),
+        )
         register_commands(
             (
                 posts_commands.create.CommandHandler,
