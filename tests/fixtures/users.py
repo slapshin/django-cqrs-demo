@@ -1,5 +1,6 @@
 import pytest
 
+from apps.users.models import User
 from tests.helpers.users import create_user
 
 DEFAULT_USER_EMAIL = "user@mail.com"
@@ -8,7 +9,7 @@ ANOTHER_USER_EMAIL = "another@mail.com"
 
 
 @pytest.fixture()
-def user(db):
+def user(db) -> User:
     """User."""
     return create_user(
         email=DEFAULT_USER_EMAIL,

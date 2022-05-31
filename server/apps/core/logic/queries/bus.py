@@ -5,6 +5,7 @@ from apps.core import injector
 from apps.core.logic.queries import IQuery
 from apps.core.logic.queries.handler import (
     IQueryHandler,
+    TQuery,
     TQueryHandler,
     TQueryResult,
 )
@@ -29,9 +30,9 @@ class IQueryBus(abc.ABC):
 class QueryBus(IQueryBus):
     """Queries dispatcher."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initializing."""
-        self._registry = {}
+        self._registry: dict[ty.Type[TQuery], ty.Type[TQueryHandler]] = {}
 
     def register_handler(self, query_handler: ty.Type[TQueryHandler]) -> None:
         """Register query handler."""

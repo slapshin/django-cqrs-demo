@@ -128,9 +128,9 @@ class _ProxyView(views.APIView):  # noqa: WPS338
 class ActionsRouter:
     """Action router description."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize."""
-        self._routes_map = defaultdict(list)
+        self._routes_map: dict[str, list[_Route]] = defaultdict(list)
 
     def delete(self, pattern, handler):  # noqa: WPS110
         """Registers DELETE api request."""

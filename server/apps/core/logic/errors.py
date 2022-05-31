@@ -14,7 +14,7 @@ class BaseApplicationError(BaseError, metaclass=abc.ABCMeta):
         code: str | None = None,
         message: str | None = None,
     ) -> None:
-        """Initizaling."""
+        """Initializing."""
         if code:
             self.code = code
         if message:

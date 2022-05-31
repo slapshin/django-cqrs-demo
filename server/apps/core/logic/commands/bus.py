@@ -3,7 +3,11 @@ import typing as ty
 
 from apps.core import injector
 from apps.core.logic.commands import ICommand, ICommandHandler
-from apps.core.logic.commands.handler import TCommandHandler, TCommandResult
+from apps.core.logic.commands.handler import (
+    TCommand,
+    TCommandHandler,
+    TCommandResult,
+)
 
 
 class ICommandBus(abc.ABC):
@@ -31,9 +35,9 @@ class ICommandBus(abc.ABC):
 class CommandBus(ICommandBus):
     """Queries dispatcher."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initializing."""
-        self._registry = {}
+        self._registry: dict[ty.Type[TCommand], ty.Type[TCommandHandler]] = {}
 
     def register_handler(
         self,

@@ -1,6 +1,7 @@
 from django.apps import AppConfig as BaseAppConfig
 from django.utils.translation import gettext_lazy as _
 
+from apps.core import injector
 from apps.core.logic.commands.shortcuts import register_commands
 
 
@@ -18,8 +19,13 @@ class AppConfig(BaseAppConfig):
             register,
             send_registration_notification,
         )
+        from apps.users.services.modules import (  # noqa: WPS433
+            UserInfrastructureServicesModule,
+        )
 
         super().ready()
+
+        injector.binder.install(UserInfrastructureServicesModule)
 
         register_commands(
             (
