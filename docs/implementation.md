@@ -201,7 +201,7 @@ Add binding from url to view same as standard django mechanism.
 
 ### Command view
 
-view.py
+_view.py_
 
 ```python
 class _Form(forms.ModelForm):
