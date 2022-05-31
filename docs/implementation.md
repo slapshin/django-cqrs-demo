@@ -44,8 +44,6 @@
 
 ## Examples
 
-### Write query
-
 #### Query
 
 ```python
@@ -58,11 +56,8 @@ class QueryResult:
 class Query(queries.BaseQuery[QueryResult]):
     user_id: int | None
     author_id: int | None = None
-```
 
-#### Query handler
 
-```python
 # query handler. 
 class QueryHandler(queries.IQueryHandler[Query]):
     # must implement `ask` method and return query result.
@@ -73,26 +68,22 @@ class QueryHandler(queries.IQueryHandler[Query]):
         )
 ```
 
-### Write command
-
 #### Command
 
 ```python
 @dataclass(frozen=True)
 class CommandResult:
     instance: Post
-    
+
+
 # command data dto
 class Command(commands.BaseCommand[CommandResult]):
     ...
     user_id: int | None
     title: str
     ...
-```
 
-#### Command handler
 
-```python
 class CommandHandler(commands.ICommandHandler[Command]):
     # every command handler must implement `execute` method and returns command result.    
     def execute(self, command: Command) -> CommandResult:
@@ -100,9 +91,10 @@ class CommandHandler(commands.ICommandHandler[Command]):
         return CommandResult(
             instance=post,
         )
+
 ```
 
-### Write query API view
+### Query API view
 
 _view.py_
 
@@ -144,7 +136,7 @@ router.get("posts", posts.list.View.as_view())
 urlpatterns = router.urls
 ```
 
-### Write command API view
+### Command API view
 
 _view.py_
 
@@ -186,7 +178,7 @@ class View(BaseCommandView):
 
 Url binding for the view is same as for query.
 
-### Write query view
+### Query view
 
 _view.py_
 
@@ -207,7 +199,7 @@ class View(BaseListQueryView):
 
 Add binding from url to view same as standard django mechanism.
 
-### Write command view
+### Command view
 
 view.py
 
@@ -270,7 +262,7 @@ class View(BaseCommandView):
         return redirect("blogs:post_detail", command_result.instance.id)
 ```
 
-Add binding from url to view same as standard django mechanism.
+Add url routing is same as standard django mechanism.
 
 ## Future improvements
 
