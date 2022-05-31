@@ -44,7 +44,7 @@
 
 ## Examples
 
-#### Query
+### Query
 
 ```python
 @dataclass(frozen=True)
@@ -68,7 +68,7 @@ class QueryHandler(queries.IQueryHandler[Query]):
         )
 ```
 
-#### Command
+### Command
 
 ```python
 @dataclass(frozen=True)
