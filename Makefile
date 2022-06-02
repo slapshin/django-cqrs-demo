@@ -1,9 +1,6 @@
 install_deps:
 	@poetry install --remove-untracked
 
-generate_test_graphql_schema:
-	@./manage.py graphql_schema --schema server.gql.schema --out tests/schema.graphql
-
 lint:
 	@./scripts/lint.sh
 
