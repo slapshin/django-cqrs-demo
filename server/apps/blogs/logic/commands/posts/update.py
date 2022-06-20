@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from apps.blogs.models import Post
 from apps.blogs.models.enums import PostStatus
-from apps.core.logic import commands
+from apps.core.logic import messages
 from apps.core.logic.errors import (
     AccessDeniedApplicationError,
     ObjectNotFoundApplicationError,
@@ -17,7 +17,7 @@ class CommandResult:
     instance: Post
 
 
-class Command(commands.BaseCommand[CommandResult]):
+class Command(messages.BaseMessage[CommandResult]):
     """Create post command."""
 
     user_id: int | None
@@ -27,27 +27,27 @@ class Command(commands.BaseCommand[CommandResult]):
     status: PostStatus
 
 
-class CommandHandler(commands.ICommandHandler[Command]):
+class CommandHandler(messages.IMessageHandler[Command]):
     """Register new user."""
 
-    def execute(self, command: Command) -> CommandResult:
+    def execute(self, message: Command) -> CommandResult:
         """Main logic here."""
-        if not command.user_id:
+        if not message.user_id:
             raise AccessDeniedApplicationError()
 
-        user = User.objects.get(id=command.user_id)
+        user = User.objects.get(id=message.user_id)
 
         try:
-            post = Post.objects.get(id=command.post_id)
+            post = Post.objects.get(id=message.post_id)
         except Post.DoesNotExist:
             raise ObjectNotFoundApplicationError()
 
         if post.author != user:
             raise AccessDeniedApplicationError()
 
-        post.title = command.title
-        post.content = command.content
-        post.status = command.status
+        post.title = message.title
+        post.content = message.content
+        post.status = message.status
         post.save()
 
         return CommandResult(

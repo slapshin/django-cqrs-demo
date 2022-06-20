@@ -5,7 +5,6 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.logic import commands
 from apps.core.pages.base_command import BaseCommandView
 from apps.users.logic.commands import login
 
@@ -32,7 +31,7 @@ class View(BaseCommandView):
         self,
         request: HttpRequest,
         form: _Form,
-    ) -> commands.ICommand:
+    ) -> login.Command:
         """Create command to execute."""
         return self.command(
             username=form.data["username"],

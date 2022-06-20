@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from apps.core.logic import commands
+from apps.core.logic import messages
 from apps.core.logic.errors import AccessDeniedApplicationError
 
 
@@ -9,18 +9,18 @@ class CommandResult:
     """Logout output dto."""
 
 
-class Command(commands.BaseCommand[CommandResult]):
+class Command(messages.BaseMessage[CommandResult]):
     """Logout command."""
 
     user_id: int | None
 
 
-class CommandHandler(commands.ICommandHandler[Command]):
+class CommandHandler(messages.IMessageHandler[Command]):
     """Logout user."""
 
-    def execute(self, command: Command) -> CommandResult:
+    def execute(self, message: Command) -> CommandResult:
         """Main logic here."""
-        if not command.user_id:
+        if not message.user_id:
             raise AccessDeniedApplicationError()
 
         return CommandResult()

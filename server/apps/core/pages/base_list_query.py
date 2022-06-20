@@ -1,4 +1,4 @@
-from apps.core.logic.queries.types import ListQueryResult
+from apps.core.logic.types import ListQueryResult
 from apps.core.pages.base_query import BaseQueryView
 
 

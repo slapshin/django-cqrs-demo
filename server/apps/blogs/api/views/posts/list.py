@@ -4,7 +4,6 @@ from rest_framework import serializers
 from apps.blogs.api.serializers import PostCardSerializer
 from apps.blogs.logic.queries import posts
 from apps.core.api.views import BaseListQueryView
-from apps.core.logic import queries
 
 
 @extend_schema_serializer(component_name="PostListInput")
@@ -19,7 +18,7 @@ class View(BaseListQueryView):
     output_serializer = PostCardSerializer
     input_serializer = _InputSerializer
 
-    def create_query(self) -> queries.IQuery:
+    def create_query(self) -> posts.list.Query:
         """Create query to execute."""
         input_dto = self.extract_input_dto()
         return self.query(

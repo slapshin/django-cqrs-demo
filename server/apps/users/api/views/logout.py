@@ -2,7 +2,6 @@ from django.contrib import auth
 from rest_framework.response import Response
 
 from apps.core.api.views import BaseCommandView
-from apps.core.logic import commands
 from apps.users.logic.commands import logout
 
 
@@ -11,7 +10,7 @@ class View(BaseCommandView):
 
     command = logout.Command
 
-    def create_command(self) -> commands.ICommand:
+    def create_command(self) -> logout.Command:
         """Create command to execute."""
         return self.command(
             user_id=self.user.id if self.user else None,

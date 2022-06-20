@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.logic import commands
+from apps.core.logic import bus, messages
 from apps.core.logic.errors import (
     BaseApplicationError,
     ValidationApplicationError,
@@ -32,7 +32,7 @@ class CommandResult:
     user: User
 
 
-class Command(commands.BaseCommand[CommandResult]):
+class Command(messages.BaseMessage[CommandResult]):
     """Register command."""
 
     email: str
@@ -40,15 +40,15 @@ class Command(commands.BaseCommand[CommandResult]):
     password2: str
 
 
-class CommandHandler(commands.ICommandHandler[Command]):
+class CommandHandler(messages.IMessageHandler[Command]):
     """Register new user."""
 
-    def execute(self, command: Command) -> CommandResult:
+    def execute(self, message: Command) -> CommandResult:
         """Main logic here."""
-        self._validate_command(command)
-        user = self._create_user(command)
+        self._validate_command(message)
+        user = self._create_user(message)
 
-        commands.execute_command_async(
+        bus.dispatch_message_async(
             send_registration_notification.Command(user_id=user.id),
         )
 
@@ -56,14 +56,14 @@ class CommandHandler(commands.ICommandHandler[Command]):
             user=user,
         )
 
-    def _validate_command(self, command: Command) -> None:
-        if command.password1 != command.password2:
+    def _validate_command(self, message: Command) -> None:
+        if message.password1 != message.password2:
             raise ValidationApplicationError(
                 {"password2": ["Passwords do not match"]},
             )
 
         try:
-            password_validation.validate_password(command.password1)
+            password_validation.validate_password(message.password1)
         except ValidationError as err:
             raise ValidationApplicationError(
                 {
@@ -71,7 +71,7 @@ class CommandHandler(commands.ICommandHandler[Command]):
                 },
             )
 
-        if User.objects.filter(email=command.email).exists():
+        if User.objects.filter(email=message.email).exists():
             raise UserAlreadyExistsError()
 
     def _create_user(self, command: Command) -> User:

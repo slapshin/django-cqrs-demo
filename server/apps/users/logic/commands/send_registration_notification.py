@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 import injector
 
-from apps.core.logic import commands
+from apps.core.logic import messages
 from apps.core.logic.errors import ObjectNotFoundApplicationError
 from apps.core.logic.interfaces import IEMailService
 from apps.users.models import User
@@ -13,13 +13,13 @@ class CommandResult:
     """Send registration notification output dto."""
 
 
-class Command(commands.BaseCommand[CommandResult]):
+class Command(messages.BaseMessage[CommandResult]):
     """Send registration notification command."""
 
     user_id: int
 
 
-class CommandHandler(commands.ICommandHandler[Command]):
+class CommandHandler(messages.IMessageHandler[Command]):
     """Send registration notification command handler."""
 
     @injector.inject
@@ -27,10 +27,10 @@ class CommandHandler(commands.ICommandHandler[Command]):
         """Initialize."""
         self._email_service = email_service
 
-    def execute(self, command: Command) -> CommandResult:
+    def execute(self, message: Command) -> CommandResult:
         """Main logic here."""
         try:
-            user = User.objects.filter(id=command.user_id).first()
+            user = User.objects.filter(id=message.user_id).first()
         except User.DoesNotExist:
             raise ObjectNotFoundApplicationError()
 

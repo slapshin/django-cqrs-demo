@@ -6,7 +6,6 @@ from apps.blogs.logic.commands import posts
 from apps.blogs.models import Post
 from apps.blogs.models.enums import PostStatus
 from apps.core.api.views import BaseCommandView
-from apps.core.logic import commands
 
 
 @extend_schema_serializer(component_name="PostUpdateInput")
@@ -23,7 +22,7 @@ class View(BaseCommandView):
     input_serializer = _InputSerializer
     output_serializer = PostSerializer
 
-    def create_command(self) -> commands.ICommand:
+    def create_command(self) -> posts.update.Command:
         """Create command to execute."""
         input_dto = self.extract_input_dto()
         return self.command(
@@ -36,7 +35,7 @@ class View(BaseCommandView):
 
     def get_output_serializer_instance(
         self,
-        command_result: posts.create.CommandResult,
+        command_result: posts.update.CommandResult,
     ) -> Post:
         """Get output serializer instance."""
         return command_result.instance

@@ -4,7 +4,6 @@ from rest_framework import serializers
 from rest_framework.response import Response
 
 from apps.core.api.views import BaseCommandView
-from apps.core.logic import commands
 from apps.users.logic.commands import register
 
 
@@ -21,7 +20,7 @@ class View(BaseCommandView):
     command = register.Command
     input_serializer = _InputSerializer
 
-    def create_command(self) -> commands.ICommand:
+    def create_command(self) -> register.Command:
         """Create command to execute."""
         input_dto = self.extract_input_dto()
         return self.command(

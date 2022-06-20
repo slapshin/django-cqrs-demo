@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from django.db import models
 
 from apps.blogs.models import Post
-from apps.core.logic import queries
+from apps.core.logic import messages
 from apps.core.logic.errors import AccessDeniedApplicationError
 
 
@@ -14,22 +14,22 @@ class QueryResult:
     instances: models.QuerySet
 
 
-class Query(queries.BaseQuery[QueryResult]):
+class Query(messages.BaseMessage[QueryResult]):
     """User posts list."""
 
     user_id: int | None
 
 
-class QueryHandler(queries.IQueryHandler[Query]):
+class QueryHandler(messages.IMessageHandler[Query]):
     """User posts list query handler."""
 
-    def ask(self, query: Query) -> QueryResult:
+    def execute(self, message: Query) -> QueryResult:
         """Handler."""
-        if not query.user_id:
+        if not message.user_id:
             raise AccessDeniedApplicationError()
 
         posts = Post.objects.filter(
-            author_id=query.user_id,
+            author_id=message.user_id,
         ).order_by("-created_at")
 
         return QueryResult(

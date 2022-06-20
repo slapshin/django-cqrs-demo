@@ -1,7 +1,6 @@
 from apps.blogs.api.serializers import PostSerializer
 from apps.blogs.logic.queries import posts
 from apps.core.api.views import BaseRetrieveQueryView
-from apps.core.logic import queries
 
 
 class View(BaseRetrieveQueryView):
@@ -10,7 +9,7 @@ class View(BaseRetrieveQueryView):
     query = posts.retrieve.Query
     output_serializer = PostSerializer
 
-    def create_query(self) -> queries.IQuery:
+    def create_query(self) -> posts.retrieve.Query:
         """Create query to execute."""
         return self.query(
             post_id=self.kwargs["pk"],

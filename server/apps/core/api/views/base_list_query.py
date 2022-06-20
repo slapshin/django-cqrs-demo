@@ -4,7 +4,7 @@ import typing as ty
 from rest_framework.response import Response
 
 from apps.core.api.views import BaseQueryView
-from apps.core.logic.queries.types import ListQueryResult
+from apps.core.logic.types import ListQueryResult
 
 
 class BaseListQueryView(BaseQueryView, metaclass=abc.ABCMeta):

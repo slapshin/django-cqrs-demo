@@ -8,7 +8,6 @@ from apps.blogs.logic.commands import posts
 from apps.blogs.models import Post
 from apps.blogs.models.enums import PostStatus
 from apps.core.api.views import BaseCommandView
-from apps.core.logic import commands
 
 
 @extend_schema_serializer(component_name="PostCreateInput")
@@ -26,7 +25,7 @@ class View(BaseCommandView):
     input_serializer = _InputSerializer
     output_serializer = PostSerializer
 
-    def create_command(self) -> commands.ICommand:
+    def create_command(self) -> posts.create.Command:
         """Create command to execute."""
         input_dto = self.extract_input_dto()
         return self.command(

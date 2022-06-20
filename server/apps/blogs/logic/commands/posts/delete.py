@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from apps.blogs.models import Post
-from apps.core.logic import commands
+from apps.core.logic import messages
 from apps.core.logic.errors import (
     AccessDeniedApplicationError,
     ObjectNotFoundApplicationError,
@@ -14,25 +14,25 @@ class CommandResult:
     """Delete post output dto."""
 
 
-class Command(commands.BaseCommand[CommandResult]):
+class Command(messages.BaseMessage[CommandResult]):
     """Delete post command."""
 
     user_id: int | None
     post_id: int
 
 
-class CommandHandler(commands.ICommandHandler[Command]):
+class CommandHandler(messages.IMessageHandler[Command]):
     """Delete post command handler."""
 
-    def execute(self, command: Command) -> CommandResult:
+    def execute(self, message: Command) -> CommandResult:
         """Main logic here."""
-        if not command.user_id:
+        if not message.user_id:
             raise AccessDeniedApplicationError()
 
-        user = User.objects.get(id=command.user_id)
+        user = User.objects.get(id=message.user_id)
 
         try:
-            post = Post.objects.get(id=command.post_id)
+            post = Post.objects.get(id=message.post_id)
         except Post.DoesNotExist:
             raise ObjectNotFoundApplicationError()
 

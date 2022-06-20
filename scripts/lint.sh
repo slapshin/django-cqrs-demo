@@ -10,9 +10,6 @@ run_checkers() {
 
   flake8 .
 
-  # Run checks to be sure settings are correct (production flag is required):
-#  DJANGO_ENV=production python manage.py check --deploy --fail-level WARNING
-
   # Running code-quality check:
   xenon --max-absolute A \
         --max-modules A \

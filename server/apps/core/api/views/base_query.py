@@ -9,13 +9,13 @@ from rest_framework.serializers import Serializer
 
 from apps.core.api.docs import SwaggerSchema
 from apps.core.api.views.base_api import BaseAPIView
-from apps.core.logic import queries
+from apps.core.logic import bus, messages
 
 
 class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     """Base query view."""
 
-    query: ty.ClassVar[ty.Type[queries.IQuery]]
+    query: ty.ClassVar[ty.Type[messages.IMessage]]
     output_serializer: ty.ClassVar[ty.Type[Serializer]]
     input_serializer: ty.ClassVar[ty.Type[Serializer]]
     success_status: HTTPStatus = HTTPStatus.OK
@@ -47,7 +47,7 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
         self._input_dto = None
 
         query = self.create_query()
-        query_result = queries.execute_query(query)
+        query_result = bus.dispatch_message(query)
 
         return self.build_response(query_result)
 
@@ -55,7 +55,7 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
         """Build response from query result."""
         return Response(self.create_output_dto(query_result))
 
-    def create_query(self) -> queries.IQuery:
+    def create_query(self) -> messages.IMessage:
         """Create query to execute."""
         raise NotImplementedError()
 

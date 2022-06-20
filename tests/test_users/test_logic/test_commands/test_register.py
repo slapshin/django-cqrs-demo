@@ -1,6 +1,6 @@
 import pytest
 
-from apps.core.logic import commands
+from apps.core.logic import bus
 from apps.core.logic.errors import ValidationApplicationError
 from apps.users.logic.commands import register
 from apps.users.models import User
@@ -9,7 +9,7 @@ from tests.helpers.db import trigger_on_commit
 
 def test_success(db):
     """Test success registration."""
-    command_result = commands.execute_command(
+    command_result = bus.dispatch_message(
         register.Command(
             email="user@mail.com",
             password1="passpass",
@@ -27,7 +27,7 @@ def test_success(db):
 def test_user_already_exists(user: User):
     """Test user already exists."""
     with pytest.raises(register.UserAlreadyExistsError):
-        commands.execute_command(
+        bus.dispatch_message(
             register.Command(
                 email=user.email,
                 password1="passpass",
@@ -42,7 +42,7 @@ def test_short_password(user: User):
         ValidationApplicationError,
         match="This password is too short",
     ):
-        commands.execute_command(
+        bus.dispatch_message(
             register.Command(
                 email=user.email,
                 password1="pass",
@@ -57,7 +57,7 @@ def test_passwords_not_matched(user: User):
         ValidationApplicationError,
         match="Passwords do not match",
     ):
-        commands.execute_command(
+        bus.dispatch_message(
             register.Command(
                 email=user.email,
                 password1="pass",
@@ -68,7 +68,7 @@ def test_passwords_not_matched(user: User):
 
 def test_email(db, mailoutbox):
     """Test email sending."""
-    command_result = commands.execute_command(
+    command_result = bus.dispatch_message(
         register.Command(
             email="user@mail.com",
             password1="passpass",

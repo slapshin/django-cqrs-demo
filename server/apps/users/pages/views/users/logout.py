@@ -4,7 +4,6 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 
 from apps.core.errors import BaseError
-from apps.core.logic import commands
 from apps.core.logic.errors import AccessDeniedApplicationError
 from apps.core.pages.base_command import BaseCommandView
 from apps.users.logic.commands import logout
@@ -24,7 +23,7 @@ class View(BaseCommandView):
         self,
         request: HttpRequest,
         form: _Form,
-    ) -> commands.ICommand:
+    ) -> logout.Command:
         """Create command to execute."""
         return self.command(
             user_id=request.user.id if request.user.is_authenticated else None,

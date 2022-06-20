@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 
-from apps.core.logic import commands
 from apps.core.pages.base_command import BaseCommandView
 from apps.users.logic.commands import register
 from apps.users.models import User
@@ -26,7 +25,7 @@ class View(BaseCommandView):
         self,
         request: HttpRequest,
         form: _Form,
-    ) -> commands.ICommand:
+    ) -> register.Command:
         """Create command to execute."""
         return self.command(
             email=form.data["email"],

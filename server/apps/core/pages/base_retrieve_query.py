@@ -1,4 +1,4 @@
-from apps.core.logic.queries.types import RetrieveQueryResult
+from apps.core.logic.types import RetrieveQueryResult
 from apps.core.pages.base_query import BaseQueryView
 
 

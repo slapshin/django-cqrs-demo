@@ -3,7 +3,6 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 
 from apps.blogs.logic.commands import posts
-from apps.core.logic import commands
 from apps.core.pages.base_command import BaseCommandView
 
 
@@ -21,7 +20,7 @@ class View(BaseCommandView):
         self,
         request: HttpRequest,
         form: forms.BaseForm | None,
-    ) -> commands.ICommand:
+    ) -> posts.delete.Command:
         """Create command to execute."""
         return self.command(
             user_id=request.user.id if request.user.is_authenticated else None,

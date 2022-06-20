@@ -5,7 +5,6 @@ from django.shortcuts import redirect
 from apps.blogs.logic.commands import posts as posts_commands
 from apps.blogs.logic.queries import posts as posts_queries
 from apps.blogs.models import Post
-from apps.core.logic import commands, queries
 from apps.core.pages.base_command import BaseCommandView
 
 
@@ -23,7 +22,10 @@ class View(BaseCommandView):
     template_name = "posts/edit.html"
     form = _Form
 
-    def create_initial_query(self, request: HttpRequest) -> queries.IQuery:
+    def create_initial_query(
+        self,
+        request: HttpRequest,
+    ) -> posts_queries.retrieve.Query:
         """Provides initial query for command view."""
         return self.initial_query(
             user_id=request.user.id if request.user.is_authenticated else None,
@@ -43,7 +45,7 @@ class View(BaseCommandView):
         self,
         request: HttpRequest,
         form: _Form,
-    ) -> commands.ICommand:
+    ) -> posts_commands.update.Command:
         """Create command to execute."""
         return self.command(
             user_id=request.user.id if request.user.is_authenticated else None,

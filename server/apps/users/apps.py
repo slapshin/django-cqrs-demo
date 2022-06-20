@@ -2,7 +2,7 @@ from django.apps import AppConfig as BaseAppConfig
 from django.utils.translation import gettext_lazy as _
 
 from apps.core import injector
-from apps.core.logic.commands.shortcuts import register_commands
+from apps.core.logic.bus import register_messages_handlers
 
 
 class AppConfig(BaseAppConfig):
@@ -27,11 +27,10 @@ class AppConfig(BaseAppConfig):
 
         injector.binder.install(UserInfrastructureServicesModule)
 
-        register_commands(
-            (
-                register.CommandHandler,
-                login.CommandHandler,
-                logout.CommandHandler,
-                send_registration_notification.CommandHandler,
-            ),
+        register_messages_handlers(
+            # commands
+            register.CommandHandler,
+            login.CommandHandler,
+            logout.CommandHandler,
+            send_registration_notification.CommandHandler,
         )
