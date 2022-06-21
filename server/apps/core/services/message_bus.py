@@ -1,5 +1,7 @@
 import typing as ty
 
+from django.db import transaction
+
 from apps.core import injector
 from apps.core.logic.messages.interfaces import (
     IMessage,
@@ -8,6 +10,7 @@ from apps.core.logic.messages.interfaces import (
     TCommandHandler,
     TMessageResult,
 )
+from apps.core.tasks.messages import execute_message_async_task
 
 
 class MessagesBus(IMessagesBus):
@@ -56,3 +59,18 @@ class MessagesBus(IMessagesBus):
             )
         message_handler = injector.get(handler_type)
         return message_handler.execute(message)
+
+    def dispatch_async(self, message: IMessage[TMessageResult]) -> None:
+        """Send command for async execution."""
+        serialized_message = message.serialize()
+        message_type = type(message)
+
+        transaction.on_commit(
+            lambda: execute_message_async_task.delay(
+                message_class="{0}.{1}".format(
+                    message_type.__module__,
+                    message_type.__name__,
+                ),
+                message_data=serialized_message,
+            ),
+        )

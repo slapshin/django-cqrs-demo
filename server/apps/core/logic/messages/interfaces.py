@@ -48,15 +48,19 @@ class IMessagesBus(abc.ABC):
         self,
         message_handler: ty.Type[TCommandHandler],
     ) -> None:
-        """Register command handler."""
+        """Register message handler."""
 
     @abc.abstractmethod
     def register_handlers(
         self,
         handlers: ty.Iterable[ty.Type[TCommandHandler]],
     ) -> None:
-        """Register many command handlers."""
+        """Register batch messages handlers."""
 
     @abc.abstractmethod
-    def dispatch(self, command: IMessage[TMessageResult]) -> TMessageResult:
+    def dispatch(self, message: IMessage[TMessageResult]) -> TMessageResult:
         """Send command and get result."""
+
+    @abc.abstractmethod
+    def dispatch_async(self, message: IMessage[TMessageResult]) -> None:
+        """Send command for async execution."""
