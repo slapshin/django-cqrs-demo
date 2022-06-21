@@ -16,15 +16,6 @@ class BaseMessage(
 ):
     """Base pydantic based message."""
 
-    @classmethod
-    def deserialize(cls, string_data: str) -> IMessage[TMessageResult]:
-        """Deserialize object."""
-        return cls.parse_raw(string_data)
-
-    def serialize(self) -> str:
-        """Serialize object."""
-        return self.json()
-
 
 class BaseQuery(
     BaseMessage[TMessageResult],

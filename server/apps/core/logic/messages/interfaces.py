@@ -7,15 +7,6 @@ TMessageResult = ty.TypeVar("TMessageResult")
 class IMessage(ty.Generic[TMessageResult], abc.ABC):
     """Command interface."""
 
-    @classmethod
-    @abc.abstractmethod
-    def deserialize(cls, string_data: str) -> "IMessage[TMessageResult]":
-        """Deserialize object."""
-
-    @abc.abstractmethod
-    def serialize(self) -> str:
-        """Serialize object."""
-
 
 TMessage = ty.TypeVar(
     "TMessage",

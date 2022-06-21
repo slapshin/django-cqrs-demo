@@ -1,6 +1,7 @@
 import typing as ty
 
 from django.db import transaction
+from pydantic import BaseModel
 
 from apps.core import injector
 from apps.core.logic.messages.interfaces import (
@@ -62,7 +63,7 @@ class MessagesBus(IMessagesBus):
 
     def dispatch_async(self, message: IMessage[TMessageResult]) -> None:
         """Send command for async execution."""
-        serialized_message = message.serialize()
+        serialized_message = self._serialize_message(message)
         message_type = type(message)
 
         transaction.on_commit(
@@ -74,3 +75,9 @@ class MessagesBus(IMessagesBus):
                 message_data=serialized_message,
             ),
         )
+
+    def _serialize_message(self, message: IMessage[TMessageResult]) -> str:
+        if isinstance(message, BaseModel):
+            return message.json()
+
+        raise ValueError("Can't serialize message: {0}".format(message))
