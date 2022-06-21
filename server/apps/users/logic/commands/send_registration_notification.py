@@ -13,13 +13,13 @@ class CommandResult:
     """Send registration notification output dto."""
 
 
-class Command(messages.BaseMessage[CommandResult]):
+class Command(messages.BaseCommand[CommandResult]):
     """Send registration notification command."""
 
     user_id: int
 
 
-class CommandHandler(messages.IMessageHandler[Command]):
+class CommandHandler(messages.BaseCommandHandler[Command]):
     """Send registration notification command handler."""
 
     @injector.inject

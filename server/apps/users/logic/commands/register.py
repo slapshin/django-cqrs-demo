@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.logic import bus, messages
+from apps.core.logic import messages
 from apps.core.logic.errors import (
     BaseApplicationError,
     ValidationApplicationError,
@@ -32,7 +32,7 @@ class CommandResult:
     user: User
 
 
-class Command(messages.BaseMessage[CommandResult]):
+class Command(messages.BaseCommand[CommandResult]):
     """Register command."""
 
     email: str
@@ -40,7 +40,7 @@ class Command(messages.BaseMessage[CommandResult]):
     password2: str
 
 
-class CommandHandler(messages.IMessageHandler[Command]):
+class CommandHandler(messages.BaseCommandHandler[Command]):
     """Register new user."""
 
     def execute(self, message: Command) -> CommandResult:
@@ -48,7 +48,7 @@ class CommandHandler(messages.IMessageHandler[Command]):
         self._validate_command(message)
         user = self._create_user(message)
 
-        bus.dispatch_message_async(
+        messages.dispatch_message_async(
             send_registration_notification.Command(user_id=user.id),
         )
 

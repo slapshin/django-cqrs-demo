@@ -5,7 +5,7 @@ from django.http import HttpRequest, HttpResponse
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
 
 from apps.core.errors import BaseError
-from apps.core.logic import bus, messages
+from apps.core.logic import messages
 from apps.core.logic.errors import AccessDeniedApplicationError
 from apps.core.pages.base import BaseView
 
@@ -13,8 +13,8 @@ from apps.core.pages.base import BaseView
 class BaseCommandView(TemplateResponseMixin, ContextMixin, BaseView):
     """Base command view."""
 
-    command: ty.Type[messages.IMessage]
-    initial_query: ty.Type[messages.IMessage] | None = None
+    command: ty.Type[messages.BaseCommand]
+    initial_query: ty.Type[messages.BaseQuery] | None = None
     form: ty.Type[forms.BaseForm]
 
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
@@ -25,7 +25,7 @@ class BaseCommandView(TemplateResponseMixin, ContextMixin, BaseView):
         query_result = None
         if self.initial_query:
             query = self.create_initial_query(request)
-            query_result = bus.dispatch_message(query)
+            query_result = messages.dispatch_message(query)
 
         return self.render_to_response(
             context=self.get_context_data(
@@ -41,7 +41,7 @@ class BaseCommandView(TemplateResponseMixin, ContextMixin, BaseView):
             command = self.create_command(request, form)
 
             try:
-                command_result = bus.dispatch_message(command)
+                command_result = messages.dispatch_message(command)
             except AccessDeniedApplicationError:  # noqa: WPS329
                 raise
             except (BaseError, ValueError) as err:
@@ -58,7 +58,7 @@ class BaseCommandView(TemplateResponseMixin, ContextMixin, BaseView):
             form=form,
         )
 
-    def create_initial_query(self, request: HttpRequest) -> messages.IMessage:
+    def create_initial_query(self, request: HttpRequest) -> messages.BaseQuery:
         """Provides initial query for command view."""
         raise NotImplementedError()
 
@@ -95,6 +95,6 @@ class BaseCommandView(TemplateResponseMixin, ContextMixin, BaseView):
         self,
         request: HttpRequest,
         form: forms.BaseForm,
-    ) -> messages.IMessage:
+    ) -> messages.BaseCommand:
         """Create command to execute."""
         raise NotImplementedError()

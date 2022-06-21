@@ -1,7 +1,7 @@
 from django.apps import AppConfig as BaseAppConfig
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.logic.bus import register_messages_handlers
+from apps.core.logic import messages
 
 
 class AppConfig(BaseAppConfig):
@@ -21,7 +21,7 @@ class AppConfig(BaseAppConfig):
 
         super().ready()
 
-        register_messages_handlers(
+        messages.register_messages_handlers(
             # commands
             posts_commands.create.CommandHandler,
             posts_commands.update.CommandHandler,

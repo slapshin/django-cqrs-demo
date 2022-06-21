@@ -14,13 +14,13 @@ class QueryResult:
     instances: models.QuerySet
 
 
-class Query(messages.BaseMessage[QueryResult]):
+class Query(messages.BaseQuery[QueryResult]):
     """Post list query."""
 
     author_id: int | None = None
 
 
-class QueryHandler(messages.IMessageHandler[Query]):
+class QueryHandler(messages.BaseQueryHandler[Query]):
     """Posts list query handler."""
 
     def execute(self, message: Query) -> QueryResult:

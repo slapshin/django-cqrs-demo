@@ -1,6 +1,6 @@
 from apps.blogs.logic.queries.posts import retrieve as retrieve_query
 from apps.blogs.models.enums import PostStatus
-from apps.core.logic import bus
+from apps.core.logic import messages
 from apps.users.models import User
 from tests.test_blogs.factories.post import PostFactory
 
@@ -9,7 +9,7 @@ def test_success(user: User):
     """Test success."""
     post = PostFactory.create(author=user)
 
-    query_result = bus.dispatch_message(
+    query_result = messages.dispatch_message(
         retrieve_query.Query(
             user_id=user.id,
             post_id=post.id,
@@ -27,7 +27,7 @@ def test_draft(user: User, another_user: User):
         status=PostStatus.DRAFT,
     )
 
-    query_result = bus.dispatch_message(
+    query_result = messages.dispatch_message(
         retrieve_query.Query(
             user_id=user.id,
             post_id=post.id,
@@ -44,7 +44,7 @@ def test_draft_and_author(user: User):
         status=PostStatus.DRAFT,
     )
 
-    query_result = bus.dispatch_message(
+    query_result = messages.dispatch_message(
         retrieve_query.Query(
             user_id=user.id,
             post_id=post.id,
@@ -58,7 +58,7 @@ def test_only_owner(user: User, another_user: User):
     """Test only owner."""
     post = PostFactory.create(author=another_user)
 
-    query_result = bus.dispatch_message(
+    query_result = messages.dispatch_message(
         retrieve_query.Query(
             user_id=user.id,
             post_id=post.id,

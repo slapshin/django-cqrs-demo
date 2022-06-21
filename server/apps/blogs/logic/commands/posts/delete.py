@@ -14,14 +14,14 @@ class CommandResult:
     """Delete post output dto."""
 
 
-class Command(messages.BaseMessage[CommandResult]):
+class Command(messages.BaseCommand[CommandResult]):
     """Delete post command."""
 
     user_id: int | None
     post_id: int
 
 
-class CommandHandler(messages.IMessageHandler[Command]):
+class CommandHandler(messages.BaseCommandHandler[Command]):
     """Delete post command handler."""
 
     def execute(self, message: Command) -> CommandResult:

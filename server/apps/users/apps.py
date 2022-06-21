@@ -2,7 +2,7 @@ from django.apps import AppConfig as BaseAppConfig
 from django.utils.translation import gettext_lazy as _
 
 from apps.core import injector
-from apps.core.logic.bus import register_messages_handlers
+from apps.core.logic.messages.shortcuts import register_messages_handlers
 
 
 class AppConfig(BaseAppConfig):

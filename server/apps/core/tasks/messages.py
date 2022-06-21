@@ -1,8 +1,8 @@
 import typing as ty
 
 from apps.core.helpers.module_loading import import_string
-from apps.core.logic.bus import dispatch_message
-from apps.core.logic.messages import IMessage
+from apps.core.logic.messages.interfaces import IMessage
+from apps.core.logic.messages.shortcuts import dispatch_message
 from celery_app import app
 
 

@@ -14,7 +14,7 @@ class CommandResult:
     instance: Post
 
 
-class Command(messages.BaseMessage[CommandResult]):
+class Command(messages.BaseCommand[CommandResult]):
     """Create post command."""
 
     user_id: int | None
@@ -23,7 +23,7 @@ class Command(messages.BaseMessage[CommandResult]):
     status: PostStatus
 
 
-class CommandHandler(messages.IMessageHandler[Command]):
+class CommandHandler(messages.BaseCommandHandler[Command]):
     """Register new user."""
 
     def execute(self, message: Command) -> CommandResult:

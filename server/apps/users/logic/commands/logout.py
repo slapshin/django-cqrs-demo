@@ -9,13 +9,13 @@ class CommandResult:
     """Logout output dto."""
 
 
-class Command(messages.BaseMessage[CommandResult]):
+class Command(messages.BaseCommand[CommandResult]):
     """Logout command."""
 
     user_id: int | None
 
 
-class CommandHandler(messages.IMessageHandler[Command]):
+class CommandHandler(messages.BaseCommandHandler[Command]):
     """Logout user."""
 
     def execute(self, message: Command) -> CommandResult:

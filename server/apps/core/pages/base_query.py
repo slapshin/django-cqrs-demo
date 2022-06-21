@@ -3,14 +3,14 @@ import typing as ty
 from django.http import HttpRequest
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
 
-from apps.core.logic import bus, messages
+from apps.core.logic import messages
 from apps.core.pages.base import BaseView
 
 
 class BaseQueryView(TemplateResponseMixin, ContextMixin, BaseView):
     """Base query view."""
 
-    query: ty.Type[messages.IMessage]
+    query: ty.Type[messages.BaseQuery]
 
     def get(self, request, *args, **kwargs):
         """Handle GET request."""
@@ -20,8 +20,8 @@ class BaseQueryView(TemplateResponseMixin, ContextMixin, BaseView):
     def execute_query(self, request: HttpRequest):
         """Execute query."""
         query = self.create_query(request)
-        return bus.dispatch_message(query)
+        return messages.dispatch_message(query)
 
-    def create_query(self, request: HttpRequest) -> messages.IMessage:
+    def create_query(self, request: HttpRequest) -> messages.BaseQuery:
         """Create query to execute."""
         raise NotImplementedError()

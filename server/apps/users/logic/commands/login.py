@@ -16,14 +16,14 @@ class CommandResult:
     user: User
 
 
-class Command(messages.BaseMessage[CommandResult]):
+class Command(messages.BaseCommand[CommandResult]):
     """Login command."""
 
     username: str
     password: str
 
 
-class CommandHandler(messages.IMessageHandler[Command]):
+class CommandHandler(messages.BaseCommandHandler[Command]):
     """Register new user."""
 
     @injector.inject

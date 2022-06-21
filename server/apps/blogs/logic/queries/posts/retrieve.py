@@ -15,7 +15,7 @@ class QueryResult:
     instance: Post | None
 
 
-class Query(messages.BaseMessage[QueryResult]):
+class Query(messages.BaseQuery[QueryResult]):
     """Post retrieve query."""
 
     post_id: int
@@ -23,7 +23,7 @@ class Query(messages.BaseMessage[QueryResult]):
     only_owner: bool = False
 
 
-class QueryHandler(messages.IMessageHandler[Query]):
+class QueryHandler(messages.BaseQueryHandler[Query]):
     """Post retrieve query handler."""
 
     def execute(self, message: Query) -> QueryResult:

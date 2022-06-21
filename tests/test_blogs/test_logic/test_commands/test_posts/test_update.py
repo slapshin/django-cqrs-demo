@@ -2,7 +2,7 @@ import pytest
 
 from apps.blogs.logic.commands.posts import update
 from apps.blogs.models.enums import PostStatus
-from apps.core.logic import bus
+from apps.core.logic import messages
 from apps.core.logic.errors import (
     AccessDeniedApplicationError,
     ObjectNotFoundApplicationError,
@@ -15,7 +15,7 @@ def test_success(user: User):
     """Test success post update."""
     post = PostFactory.create(author=user)
 
-    bus.dispatch_message(
+    messages.dispatch_message(
         update.Command(
             user_id=user.id,
             post_id=post.id,
@@ -37,7 +37,7 @@ def test_not_author(user: User, another_user: User):
     post = PostFactory.create(author=another_user)
 
     with pytest.raises(AccessDeniedApplicationError):
-        bus.dispatch_message(
+        messages.dispatch_message(
             update.Command(
                 user_id=user.id,
                 post_id=post.id,
@@ -53,7 +53,7 @@ def test_not_found(user: User):
     post = PostFactory.create(author=user)
 
     with pytest.raises(ObjectNotFoundApplicationError):
-        bus.dispatch_message(
+        messages.dispatch_message(
             update.Command(
                 user_id=user.id,
                 post_id=post.id + 1,
@@ -69,7 +69,7 @@ def test_not_user(user: User):
     post = PostFactory.create(author=user)
 
     with pytest.raises(AccessDeniedApplicationError):
-        bus.dispatch_message(
+        messages.dispatch_message(
             update.Command(
                 user_id=None,
                 post_id=post.id,
