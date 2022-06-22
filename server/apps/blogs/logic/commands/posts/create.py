@@ -26,16 +26,16 @@ class Command(messages.BaseCommand[CommandResult]):
 class CommandHandler(messages.BaseCommandHandler[Command]):
     """Register new user."""
 
-    def execute(self, message: Command) -> CommandResult:
+    def handle(self, command: Command) -> CommandResult:
         """Main logic here."""
-        if not message.user_id:
+        if not command.user_id:
             raise AccessDeniedApplicationError()
 
-        user = User.objects.get(id=message.user_id)
+        user = User.objects.get(id=command.user_id)
         post = Post.objects.create(
-            title=message.title,
-            content=message.content,
-            status=message.status,
+            title=command.title,
+            content=command.content,
+            status=command.status,
             author=user,
         )
 

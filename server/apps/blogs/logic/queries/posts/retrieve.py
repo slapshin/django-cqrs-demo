@@ -26,30 +26,30 @@ class Query(messages.BaseQuery[QueryResult]):
 class QueryHandler(messages.BaseQueryHandler[Query]):
     """Post retrieve query handler."""
 
-    def execute(self, message: Query) -> QueryResult:
+    def handle(self, query: Query) -> QueryResult:
         """Handler."""
-        if message.only_owner and not message.user_id:
+        if query.only_owner and not query.user_id:
             raise AccessDeniedApplicationError()
 
         return QueryResult(
-            instance=self._get_post(message),
+            instance=self._get_post(query),
         )
 
-    def _get_post(self, message: Query) -> Post | None:
+    def _get_post(self, query: Query) -> Post | None:
         posts = Post.objects.all()
-        if message.user_id:
+        if query.user_id:
             posts = posts.filter(
                 models.Q(status=PostStatus.PUBLISHED)
                 | models.Q(
                     status=PostStatus.DRAFT,
-                    author_id=message.user_id,
+                    author_id=query.user_id,
                 ),
             )
         else:
             posts = posts.filter(models.Q(status=PostStatus.PUBLISHED))
 
-        post = posts.filter(id=message.post_id).first()
-        if post and not self._is_post_allowed(post, message):
+        post = posts.filter(id=query.post_id).first()
+        if post and not self._is_post_allowed(post, query):
             return None
 
         return post

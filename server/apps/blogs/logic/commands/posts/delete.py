@@ -24,15 +24,15 @@ class Command(messages.BaseCommand[CommandResult]):
 class CommandHandler(messages.BaseCommandHandler[Command]):
     """Delete post command handler."""
 
-    def execute(self, message: Command) -> CommandResult:
+    def handle(self, command: Command) -> CommandResult:
         """Main logic here."""
-        if not message.user_id:
+        if not command.user_id:
             raise AccessDeniedApplicationError()
 
-        user = User.objects.get(id=message.user_id)
+        user = User.objects.get(id=command.user_id)
 
         try:
-            post = Post.objects.get(id=message.post_id)
+            post = Post.objects.get(id=command.post_id)
         except Post.DoesNotExist:
             raise ObjectNotFoundApplicationError()
 

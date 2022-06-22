@@ -59,7 +59,7 @@ class MessagesBus(IMessagesBus):
                 ),
             )
         message_handler = injector.get(handler_type)
-        return message_handler.execute(message)
+        return message_handler.handle(message)
 
     def dispatch_async(self, message: IMessage[TMessageResult]) -> None:
         """Send command for async execution."""

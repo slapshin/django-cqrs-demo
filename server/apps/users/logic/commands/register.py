@@ -43,10 +43,10 @@ class Command(messages.BaseCommand[CommandResult]):
 class CommandHandler(messages.BaseCommandHandler[Command]):
     """Register new user."""
 
-    def execute(self, message: Command) -> CommandResult:
+    def handle(self, command: Command) -> CommandResult:
         """Main logic here."""
-        self._validate_command(message)
-        user = self._create_user(message)
+        self._validate_command(command)
+        user = self._create_user(command)
 
         messages.dispatch_message_async(
             send_registration_notification.Command(user_id=user.id),
@@ -56,14 +56,14 @@ class CommandHandler(messages.BaseCommandHandler[Command]):
             user=user,
         )
 
-    def _validate_command(self, message: Command) -> None:
-        if message.password1 != message.password2:
+    def _validate_command(self, command: Command) -> None:
+        if command.password1 != command.password2:
             raise ValidationApplicationError(
                 {"password2": ["Passwords do not match"]},
             )
 
         try:
-            password_validation.validate_password(message.password1)
+            password_validation.validate_password(command.password1)
         except ValidationError as err:
             raise ValidationApplicationError(
                 {
@@ -71,7 +71,7 @@ class CommandHandler(messages.BaseCommandHandler[Command]):
                 },
             )
 
-        if User.objects.filter(email=message.email).exists():
+        if User.objects.filter(email=command.email).exists():
             raise UserAlreadyExistsError()
 
     def _create_user(self, command: Command) -> User:

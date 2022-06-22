@@ -18,9 +18,9 @@ class Command(messages.BaseCommand[CommandResult]):
 class CommandHandler(messages.BaseCommandHandler[Command]):
     """Logout user."""
 
-    def execute(self, message: Command) -> CommandResult:
+    def handle(self, command: Command) -> CommandResult:
         """Main logic here."""
-        if not message.user_id:
+        if not command.user_id:
             raise AccessDeniedApplicationError()
 
         return CommandResult()

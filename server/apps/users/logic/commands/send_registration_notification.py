@@ -27,10 +27,10 @@ class CommandHandler(messages.BaseCommandHandler[Command]):
         """Initialize."""
         self._email_service = email_service
 
-    def execute(self, message: Command) -> CommandResult:
+    def handle(self, command: Command) -> CommandResult:
         """Main logic here."""
         try:
-            user = User.objects.filter(id=message.user_id).first()
+            user = User.objects.filter(id=command.user_id).first()
         except User.DoesNotExist:
             raise ObjectNotFoundApplicationError()
 

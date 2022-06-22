@@ -23,13 +23,13 @@ class Query(messages.BaseQuery[QueryResult]):
 class QueryHandler(messages.BaseQueryHandler[Query]):
     """User posts list query handler."""
 
-    def execute(self, message: Query) -> QueryResult:
+    def handle(self, query: Query) -> QueryResult:
         """Handler."""
-        if not message.user_id:
+        if not query.user_id:
             raise AccessDeniedApplicationError()
 
         posts = Post.objects.filter(
-            author_id=message.user_id,
+            author_id=query.user_id,
         ).order_by("-created_at")
 
         return QueryResult(

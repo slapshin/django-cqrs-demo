@@ -23,12 +23,12 @@ class Query(messages.BaseQuery[QueryResult]):
 class QueryHandler(messages.BaseQueryHandler[Query]):
     """Posts list query handler."""
 
-    def execute(self, message: Query) -> QueryResult:
+    def handle(self, query: Query) -> QueryResult:
         """Handler."""
         posts = Post.objects.filter(status=PostStatus.PUBLISHED)
 
-        if message.author_id is not None:
-            posts = posts.filter(author_id=message.author_id)
+        if query.author_id is not None:
+            posts = posts.filter(author_id=query.author_id)
 
         posts = posts.order_by("-created_at")
 

@@ -31,9 +31,9 @@ class CommandHandler(messages.BaseCommandHandler[Command]):
         """Initializing."""
         self._auth_service = auth_service
 
-    def execute(self, message: Command) -> CommandResult:
+    def handle(self, command: Command) -> CommandResult:
         """Main logic here."""
-        user = self._auth_service.auth(message.username, message.password)
+        user = self._auth_service.auth(command.username, command.password)
         if not user:
             raise AuthenticationApplicationError()
 
