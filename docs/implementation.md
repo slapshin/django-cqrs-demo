@@ -25,10 +25,10 @@
 
 ```mermaid
   sequenceDiagram
-    participant router as Router 
-    participant view as API View / View
-    participant bus as CQRS query/command bus 
-    participant handler as CQRS query/command handler
+    participant router
+    participant view as API View / View 
+    participant bus as messages bus 
+    participant handler as query/command handler
     participant database 
     router->>view: request 
     view->>bus: query/command 
@@ -47,24 +47,35 @@
 ### Query
 
 ```python
+
 @dataclass(frozen=True)
-class QueryResult:
+class QueryResult:  # query result
+    """Posts list result."""
+
     instances: models.QuerySet
 
 
-# query data dto. 
-class Query(queries.BaseQuery[QueryResult]):
-    user_id: int | None
+class Query(messages.BaseQuery[QueryResult]):   # inherit from BaseQuery 
+    """Post list query."""
+
     author_id: int | None = None
 
 
-# query handler. 
-class QueryHandler(queries.IQueryHandler[Query]):
-    # must implement `ask` method and return query result.
-    def ask(self, query: Query) -> QueryResult:
-        ...
+class QueryHandler(messages.BaseQueryHandler[Query]):  # inherit from BaseQueryHandler
+    """Posts list query handler."""
+
+    def handle(self, query: Query) -> QueryResult:  # handle logic
+        """Handler."""
+        posts = Post.objects.filter(status=PostStatus.PUBLISHED)
+
+        if query.author_id is not None:
+            posts = posts.filter(author_id=query.author_id)
+
+        posts = posts.order_by("-created_at")
+
+        # returns query result
         return QueryResult(
-            ...
+            instances=posts,
         )
 ```
 
@@ -72,26 +83,40 @@ class QueryHandler(queries.IQueryHandler[Query]):
 
 ```python
 @dataclass(frozen=True)
-class CommandResult:
+class CommandResult: # command result dto
+    """Create post output dto."""
+
     instance: Post
 
 
-# command data dto
-class Command(commands.BaseCommand[CommandResult]):
-    ...
+class Command(messages.BaseCommand[CommandResult]): # inherit from BaseCommand
+    """Create post command."""
+
     user_id: int | None
     title: str
-    ...
+    content: str  # noqa: WPS110
+    status: PostStatus
 
 
-class CommandHandler(commands.ICommandHandler[Command]):
-    # every command handler must implement `execute` method and returns command result.    
-    def execute(self, command: Command) -> CommandResult:
-        ...
-        return CommandResult(
+class CommandHandler(messages.BaseCommandHandler[Command]):  # inherit from BaseCommandHandler
+    """Create post."""
+
+    def handle(self, command: Command) -> CommandResult:  # handle logic
+        """Main logic here."""
+        if not command.user_id:
+            raise AccessDeniedApplicationError()
+
+        user = User.objects.get(id=command.user_id)
+        post = Post.objects.create(
+            title=command.title,
+            content=command.content,
+            status=command.status,
+            author=user,
+        )
+        # returns command result
+        return CommandResult( 
             instance=post,
         )
-
 ```
 
 ### Query API view

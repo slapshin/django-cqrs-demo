@@ -24,7 +24,7 @@ class Command(messages.BaseCommand[CommandResult]):
 
 
 class CommandHandler(messages.BaseCommandHandler[Command]):
-    """Register new user."""
+    """Create post."""
 
     def handle(self, command: Command) -> CommandResult:
         """Main logic here."""
