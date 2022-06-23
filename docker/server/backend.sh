@@ -6,9 +6,4 @@ set -o errexit
 
 nginx
 
-_UWSGI_OPTS="--ini docker/server/uwsgi.ini"
-if [ "${UWSGI_PROCESSES_AUTO:-}" == "1" ]; then
-  _UWSGI_OPTS="${_UWSGI_OPTS} --processes $(nproc)"
-fi
-
-uwsgi $_UWSGI_OPTS
+gunicorn server.asgi:application -k uvicorn.workers.UvicornWorker
