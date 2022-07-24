@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+import injector
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from django.utils import timezone
@@ -10,6 +11,7 @@ from apps.core.logic.errors import (
     BaseApplicationError,
     ValidationApplicationError,
 )
+from apps.core.logic.messages.interfaces import IMessagesBus
 from apps.users.logic.commands import send_registration_notification
 from apps.users.models import User
 
@@ -43,12 +45,17 @@ class Command(messages.BaseCommand[CommandResult]):
 class CommandHandler(messages.BaseCommandHandler[Command]):
     """Register new user."""
 
+    @injector.inject
+    def __init__(self, message_bus: IMessagesBus) -> None:
+        """Initializing."""
+        self._message_bus = message_bus
+
     def handle(self, command: Command) -> CommandResult:
         """Main logic here."""
         self._validate_command(command)
         user = self._create_user(command)
 
-        messages.dispatch_message_async(
+        self._message_bus.dispatch_async(
             send_registration_notification.Command(user_id=user.id),
         )
 
