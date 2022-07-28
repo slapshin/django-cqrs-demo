@@ -3,5 +3,5 @@ import abc
 from apps.core.errors import BaseError
 
 
-class BaseInfrastructureError(BaseError, metaclass=abc.ABCMeta):
+class BaseApplicationError(BaseError, metaclass=abc.ABCMeta):
     """Base exception for services errors."""

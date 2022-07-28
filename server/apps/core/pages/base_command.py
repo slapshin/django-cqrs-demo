@@ -4,10 +4,11 @@ from django.forms import forms
 from django.http import HttpRequest, HttpResponse
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
 
+from apps.core.domain import messages
+from apps.core.domain.errors import AccessDeniedDomainError
 from apps.core.errors import BaseError
-from apps.core.logic import messages
-from apps.core.logic.errors import AccessDeniedApplicationError
 from apps.core.pages.base import BaseView
+from apps.core.services.messages import dispatch_message
 
 
 class BaseCommandView(TemplateResponseMixin, ContextMixin, BaseView):
@@ -25,7 +26,7 @@ class BaseCommandView(TemplateResponseMixin, ContextMixin, BaseView):
         query_result = None
         if self.initial_query:
             query = self.create_initial_query(request)
-            query_result = messages.dispatch_message(query)
+            query_result = dispatch_message(query)
 
         return self.render_to_response(
             context=self.get_context_data(
@@ -41,8 +42,8 @@ class BaseCommandView(TemplateResponseMixin, ContextMixin, BaseView):
             command = self.create_command(request, form)
 
             try:
-                command_result = messages.dispatch_message(command)
-            except AccessDeniedApplicationError:  # noqa: WPS329
+                command_result = dispatch_message(command)
+            except AccessDeniedDomainError:  # noqa: WPS329
                 raise
             except (BaseError, ValueError) as err:
                 form.add_error(None, str(err))

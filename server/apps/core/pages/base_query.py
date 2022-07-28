@@ -3,8 +3,9 @@ import typing as ty
 from django.http import HttpRequest
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
 
-from apps.core.logic import messages
+from apps.core.domain import messages
 from apps.core.pages.base import BaseView
+from apps.core.services.messages import dispatch_message
 
 
 class BaseQueryView(TemplateResponseMixin, ContextMixin, BaseView):
@@ -20,7 +21,7 @@ class BaseQueryView(TemplateResponseMixin, ContextMixin, BaseView):
     def execute_query(self, request: HttpRequest):
         """Execute query."""
         query = self.create_query(request)
-        return messages.dispatch_message(query)
+        return dispatch_message(query)
 
     def create_query(self, request: HttpRequest) -> messages.BaseQuery:
         """Create query to execute."""

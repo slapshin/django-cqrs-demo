@@ -2,8 +2,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.views import View
 
+from apps.core.domain.errors import AccessDeniedDomainError
 from apps.core.errors import BaseError
-from apps.core.logic.errors import AccessDeniedApplicationError
 
 
 class BaseView(View):
@@ -22,7 +22,7 @@ class BaseView(View):
         err: BaseError,
     ) -> HttpResponse:
         """Process errors."""
-        if isinstance(err, AccessDeniedApplicationError):
+        if isinstance(err, AccessDeniedDomainError):
             return redirect("users:login")
 
         raise err

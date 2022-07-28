@@ -1,7 +1,7 @@
 import injector
 
 from apps.users import services
-from apps.users.logic import interfaces
+from apps.users.domain import interfaces
 
 
 class UserInfrastructureServicesModule(injector.Module):

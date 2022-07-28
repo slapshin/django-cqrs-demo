@@ -1,6 +1,6 @@
 from django.http import HttpRequest
 
-from apps.blogs.logic.queries import posts
+from apps.blogs.domain.queries import posts
 from apps.core.pages.base_list_query import BaseListQueryView
 
 

@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 
-from apps.users.logic.interfaces import IAuthenticationService
+from apps.users.domain.interfaces import IAuthenticationService
 from apps.users.models import User
 
 
