@@ -1,5 +1,5 @@
 from apps.blogs.api.serializers import PostSerializer
-from apps.blogs.domain.queries import posts
+from apps.blogs.logic.queries import posts
 from apps.core.api.views import BaseRetrieveQueryView
 
 

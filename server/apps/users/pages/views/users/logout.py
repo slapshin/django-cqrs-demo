@@ -3,10 +3,10 @@ from django.contrib import auth
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 
-from apps.core.domain.errors import AccessDeniedDomainError
 from apps.core.errors import BaseError
+from apps.core.logic.errors import AccessDeniedApplicationError
 from apps.core.pages.base_command import BaseCommandView
-from apps.users.domain.commands import logout
+from apps.users.logic.commands import logout
 
 
 class _Form(forms.Form):
@@ -53,7 +53,7 @@ class View(BaseCommandView):
         err: BaseError,
     ) -> HttpResponse:
         """Process errors."""
-        if isinstance(err, AccessDeniedDomainError):
+        if isinstance(err, AccessDeniedApplicationError):
             return redirect("blogs:home")
 
         return super().handle_error(request, err)

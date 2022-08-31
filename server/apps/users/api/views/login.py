@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.response import Response
 
 from apps.core.api.views import BaseCommandView
-from apps.users.domain.commands import login
+from apps.users.logic.commands import login
 
 
 @extend_schema_serializer(component_name="LoginInput")

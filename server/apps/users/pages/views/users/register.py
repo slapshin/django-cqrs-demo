@@ -4,7 +4,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 
 from apps.core.pages.base_command import BaseCommandView
-from apps.users.domain.commands import register
+from apps.users.logic.commands import register
 from apps.users.models import User
 
 

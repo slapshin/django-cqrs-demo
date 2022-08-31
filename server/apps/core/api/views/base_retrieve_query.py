@@ -3,7 +3,7 @@ import abc
 from rest_framework.exceptions import NotFound
 
 from apps.core.api.views import BaseQueryView
-from apps.core.domain.messages.types import RetrieveQueryResult
+from apps.core.logic.messages.types import RetrieveQueryResult
 
 
 class BaseRetrieveQueryView(BaseQueryView, metaclass=abc.ABCMeta):

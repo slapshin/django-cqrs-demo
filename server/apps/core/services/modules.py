@@ -1,8 +1,8 @@
 import injector
 
 from apps.core import services
-from apps.core.domain import interfaces
-from apps.core.domain.messages.interfaces import IMessagesBus
+from apps.core.logic import interfaces
+from apps.core.logic.messages.interfaces import IMessagesBus
 
 
 class CodeInfrastructureModule(injector.Module):

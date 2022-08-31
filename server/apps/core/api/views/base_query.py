@@ -9,8 +9,7 @@ from rest_framework.serializers import Serializer
 
 from apps.core.api.docs import SwaggerSchema
 from apps.core.api.views.base_api import BaseAPIView
-from apps.core.domain import messages
-from apps.core.services.messages import dispatch_message
+from apps.core.logic import messages
 
 
 class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
@@ -48,7 +47,7 @@ class BaseQueryView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
         self._input_dto = None
 
         query = self.create_query()
-        query_result = dispatch_message(query)
+        query_result = messages.dispatch_message(query)
 
         return self.build_response(query_result)
 

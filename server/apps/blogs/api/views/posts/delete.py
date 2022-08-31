@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from apps.blogs.domain.commands import posts
+from apps.blogs.logic.commands import posts
 from apps.core.api.views import BaseCommandView
 
 

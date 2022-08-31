@@ -2,7 +2,7 @@ from django import forms
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 
-from apps.blogs.domain.commands import posts
+from apps.blogs.logic.commands import posts
 from apps.core.pages.base_command import BaseCommandView
 
 

@@ -1,4 +1,4 @@
-from apps.core.domain.messages.types import ListQueryResult
+from apps.core.logic.messages.types import ListQueryResult
 from apps.core.pages.base_query import BaseQueryView
 
 

@@ -2,7 +2,7 @@ from drf_spectacular.utils import extend_schema_serializer
 from rest_framework import serializers
 
 from apps.blogs.api.serializers import PostCardSerializer
-from apps.blogs.domain.queries import posts
+from apps.blogs.logic.queries import posts
 from apps.core.api.views import BaseListQueryView
 
 

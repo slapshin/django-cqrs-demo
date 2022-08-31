@@ -1,7 +1,7 @@
 from django.apps import AppConfig as BaseAppConfig
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.services import messages
+from apps.core.logic import messages
 
 
 class AppConfig(BaseAppConfig):
@@ -12,10 +12,10 @@ class AppConfig(BaseAppConfig):
 
     def ready(self):
         """App ready callback."""
-        from apps.blogs.domain.commands import (  # noqa: WPS433
+        from apps.blogs.logic.commands import (  # noqa: WPS433
             posts as posts_commands,
         )
-        from apps.blogs.domain.queries import (  # noqa: WPS433
+        from apps.blogs.logic.queries import (  # noqa: WPS433
             posts as posts_queries,
         )
 

@@ -2,9 +2,9 @@ import typing as ty
 
 from pydantic import BaseModel
 
-from apps.core.domain.messages.interfaces import IMessage
 from apps.core.helpers.module_loading import import_string
-from apps.core.services.messages import dispatch_message
+from apps.core.logic.messages import dispatch_message
+from apps.core.logic.messages.interfaces import IMessage
 from celery_app import app
 
 

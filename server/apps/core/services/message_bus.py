@@ -4,7 +4,7 @@ from django.db import transaction
 from pydantic import BaseModel
 
 from apps.core import injector
-from apps.core.domain.messages.interfaces import (
+from apps.core.logic.messages.interfaces import (
     IMessage,
     IMessageHandler,
     IMessagesBus,

@@ -9,8 +9,7 @@ from rest_framework.serializers import Serializer
 
 from apps.core.api.docs import SwaggerSchema
 from apps.core.api.views.base_api import BaseAPIView
-from apps.core.domain import messages
-from apps.core.services.messages import dispatch_message
+from apps.core.logic import messages
 
 
 class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
@@ -45,7 +44,7 @@ class BaseCommandView(BaseAPIView, metaclass=abc.ABCMeta):  # noqa: WPS214
     def handle_request(self, request: Request, **kwargs) -> Response:
         """Process request."""
         command = self.create_command()
-        command_result = dispatch_message(command)
+        command_result = messages.dispatch_message(command)
 
         return self.build_response(command_result)
 

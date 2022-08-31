@@ -9,23 +9,23 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.core.api.docs import SwaggerSchema
-from apps.core.domain.errors import (
-    AccessDeniedDomainError,
-    AuthenticationDomainError,
-    BaseDomainError,
-    ObjectNotFoundDomainError,
-    ValidationDomainError,
+from apps.core.logic.errors import (
+    AccessDeniedApplicationError,
+    AuthenticationApplicationError,
+    BaseApplicationError,
+    ObjectNotFoundApplicationError,
+    ValidationApplicationError,
 )
 
 _ERRORS_CODES_MAP = types.MappingProxyType(
     {
-        AccessDeniedDomainError: HTTPStatus.FORBIDDEN,
-        AuthenticationDomainError: HTTPStatus.UNAUTHORIZED,
+        AccessDeniedApplicationError: HTTPStatus.FORBIDDEN,
+        AuthenticationApplicationError: HTTPStatus.UNAUTHORIZED,
         (
             ObjectDoesNotExist,
-            ObjectNotFoundDomainError,
+            ObjectNotFoundApplicationError,
         ): HTTPStatus.NOT_FOUND,
-        BaseDomainError: HTTPStatus.BAD_REQUEST,
+        BaseApplicationError: HTTPStatus.BAD_REQUEST,
     },
 )
 
@@ -76,7 +76,7 @@ class BaseAPIView(views.APIView, metaclass=abc.ABCMeta):
     def handle_exception(self, err: Exception) -> Response:
         """Handle error."""
         response = None
-        if isinstance(err, ValidationDomainError):  # noqa: WPS223
+        if isinstance(err, ValidationApplicationError):  # noqa: WPS223
             response = Response(
                 data=err.errors,
                 status=HTTPStatus.BAD_REQUEST,

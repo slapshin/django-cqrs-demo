@@ -2,7 +2,7 @@ from django.contrib import auth
 from rest_framework.response import Response
 
 from apps.core.api.views import BaseCommandView
-from apps.users.domain.commands import logout
+from apps.users.logic.commands import logout
 
 
 class View(BaseCommandView):

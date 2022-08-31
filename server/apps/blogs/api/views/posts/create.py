@@ -4,7 +4,7 @@ from drf_spectacular.utils import extend_schema_serializer
 from rest_framework import serializers
 
 from apps.blogs.api.serializers import PostSerializer
-from apps.blogs.domain.commands import posts
+from apps.blogs.logic.commands import posts
 from apps.blogs.models import Post
 from apps.blogs.models.enums import PostStatus
 from apps.core.api.views import BaseCommandView

@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.pages.base_command import BaseCommandView
-from apps.users.domain.commands import login
+from apps.users.logic.commands import login
 
 
 class _Form(forms.Form):
