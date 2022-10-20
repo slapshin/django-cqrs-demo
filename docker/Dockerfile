@@ -1,8 +1,6 @@
 FROM python:3.10.2-slim as base
 
-ENV C_FORCE_ROOT=true \
-    # python
-    PYTHONFAULTHANDLER=1 \
+ENV PYTHONFAULTHANDLER=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONHASHSEED=random \
     # pip
