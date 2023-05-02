@@ -131,10 +131,10 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
 
       - name: Build production and push Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
-          file: docker/Dockerfile
+          file: devops/docker/Dockerfile
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
