@@ -18,7 +18,7 @@ jobs:
 
       - uses: hadolint/hadolint-action@v1.6.0
         with:
-          dockerfile: docker/Dockerfile
+          dockerfile: devops/docker/Dockerfile
 
 
   build_test_image:
@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: docker/Dockerfile
+          file: devops/docker/Dockerfile
           push: false
           tags: ${{ env.TEST_IMAGE_NAME }}
           target: test
