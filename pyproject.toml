@@ -28,6 +28,7 @@ crispy-bootstrap5 = "*"
 uvicorn = "*"
 gunicorn = "*"
 psycopg = {extras = ["binary"], version = "*"}
+async-timeout = "*"
 
 [tool.poetry.dev-dependencies]
 mypy = "*"
