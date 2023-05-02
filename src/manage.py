@@ -3,6 +3,9 @@
 
 import os
 import sys
+from pathlib import PurePath
+
+BASE_DIR = PurePath(__file__).parent
 
 
 def _check_django_installed() -> None:
@@ -17,7 +20,7 @@ def _check_django_installed() -> None:
 
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "server.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.settings")
     try:
         from django.core.management import (  # noqa: WPS433
             execute_from_command_line,

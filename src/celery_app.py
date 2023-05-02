@@ -3,9 +3,9 @@ import os
 from celery import Celery
 from django.conf import settings
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "server.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.settings")
 
-app = Celery("server")
+app = Celery("app")
 
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.conf.update(worker_pool_restarts=True)

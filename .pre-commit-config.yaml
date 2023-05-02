@@ -16,10 +16,10 @@ repos:
       - id: polint
         name: polint
         language: system
-        entry: poetry run polint -i location,unsorted,untranslated locale
+        entry: poetry run polint -i location,unsorted,untranslated src/locale
         pass_filenames: false
       - id: dennis
         name: dennis
         language: system
-        entry: poetry run dennis-cmd lint --errorsonly locale
+        entry: poetry run dennis-cmd lint --errorsonly src/locale
         pass_filenames: false

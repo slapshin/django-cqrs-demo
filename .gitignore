@@ -160,3 +160,4 @@ cython_debug/
 .idea/
 server/settings/environments/development.py
 pytest.ini
+run

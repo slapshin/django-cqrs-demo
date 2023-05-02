@@ -102,7 +102,7 @@ jobs:
         env:
           APP_TEST_IMAGE: ${{ env.TEST_IMAGE_NAME }}
         run: |
-          docker-compose -f ci/docker-compose.yml up --exit-code-from app
+          docker-compose -f devops/ci/docker-compose.yml up --exit-code-from app
 
   build:
     runs-on: ubuntu-20.04
@@ -129,9 +129,6 @@ jobs:
           tags: |
             type=sha,priority=300
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
-
-      - name: Update .dockerignore
-        run: cat docker/.dockerignore.production >> .dockerignore
 
       - name: Build production and push Docker image
         uses: docker/build-push-action@v2

@@ -40,17 +40,15 @@ RUN apt-get update \
 
 FROM base as production
 
-ARG APP_VERSION
-
-RUN groupadd --system --gid 10001 app \
-    && useradd --system --uid 10001 --no-log-init -g app app
-
-COPY . .
+COPY devops/docker/server .
+COPY devops/docker/nginx/* /etc/nginx
+COPY ./src ./src
 
 RUN export DJANGO_ENV=build \
-    && python manage.py collectstatic --noinput --verbosity 0 \
-    && python manage.py compilemessages \
-    && cp docker/nginx/* /etc/nginx \
+    && python src/manage.py collectstatic --noinput --verbosity 0 \
+    && python src/manage.py compilemessages \
+    && groupadd --system --gid 10001 app \
+    && useradd --system --uid 10001 --no-log-init -g app app \
     && chmod -R 755 /app \
     && mkdir /var/run/app \
     && mkdir /var/run/nginx \
@@ -61,12 +59,11 @@ RUN export DJANGO_ENV=build \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
 
-ENV DJANGO_ENV=production \
-    APP_VERSION=$APP_VERSION
+ENV DJANGO_ENV=production
 
 USER app
 
-CMD ["/bin/bash", "docker/server/backend.sh"]
+CMD ["make", "server"]
 
 # ---
 
@@ -77,4 +74,5 @@ RUN poetry install --no-interaction --no-ansi
 COPY . .
 
 RUN export DJANGO_ENV=build \
-    && python manage.py compilemessages
+    && python src/manage.py compilemessages
+

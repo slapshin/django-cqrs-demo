@@ -1,4 +1,4 @@
-from server import BASE_DIR
+from manage import BASE_DIR
 
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
