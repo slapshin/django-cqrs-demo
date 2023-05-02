@@ -16,7 +16,6 @@ INSTALLED_APPS = (
     "health_check",
     "health_check.db",
     "health_check.cache",
-    "health_check.storage",
     "crispy_forms",
     "crispy_bootstrap5",
     "drf_spectacular",
