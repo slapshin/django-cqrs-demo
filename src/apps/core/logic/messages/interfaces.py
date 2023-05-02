@@ -21,7 +21,7 @@ class IMessageHandler(
     """Base message handler."""
 
     @abc.abstractmethod
-    def handle(self, message: TMessage) -> TMessageResult:
+    def handle(self, message: TMessage) -> TMessageResult:  # type: ignore
         """Main logic here."""
 
 
